@@ -8,7 +8,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- MathJax 数学公式 -->
+  <!-- MathJax -->
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script>
     window.MathJax = {
@@ -37,9 +37,12 @@
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
         <div class="space-x-4">
+          <!-- ✅ 修复：所有链接添加 ../ 返回根目录，同文件夹内直接写文件名 -->
           <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
           <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
-          <a href="lab.html" class="text-blue-600 font-semibold">可视化实验室</a>
+          <a href="lab.html" class="text-blue-600 font-semibold">实验室</a>
+          <a href="formula-list.html" class="hover:text-blue-600 transition">公式手册</a>
+          <a href="quiz.html" class="hover:text-blue-600 transition">测验挑战</a>
         </div>
       </div>
     </div>

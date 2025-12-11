@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公式手册 - 微积分平台</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- MathJax -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-50">
+  
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
+        <div class="space-x-4">
+          <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
+          <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
+          <a href="lab.html" class="hover:text-blue-600 transition">实验室</a>
+          <a href="formula-list.html" class="text-blue-600 font-semibold">公式手册</a>
+          <a href="quiz.html" class="hover:text-blue-600 transition">测验挑战</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主要内容 -->
+  <main class="container mx-auto px-6 py-8">
+    <h2 class="text-4xl font-bold text-center mb-8">📚 交互式公式手册</h2>
+    
+    <!-- 搜索框 -->
+    <div class="mb-8 text-center">
+      <input type="text" id="searchInput" placeholder="搜索公式（如：导数、积分、泰勒）" 
+             class="w-full max-w-md px-4 py-2 border rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- 公式分类网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="formulaGrid">
+      
+      <!-- 🟦 基本导数公式 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="导数 基本 幂函数">
+        <h3 class="text-xl font-bold text-blue-600 mb-3">基本导数公式</h3>
+        <div class="space-y-2 text-sm bg-blue-50 p-3 rounded">
+          <p>$$(x^n)' = nx^{n-1}$$</p>
+          <p>$$(\sin x)' = \cos x$$</p>
+          <p>$$(\cos x)' = -\sin x$$</p>
+          <p>$$(e^x)' = e^x$$</p>
+          <p>$$(\ln x)' = \frac{1}{x}$$</p>
+        </div>
+        <button onclick="copyFormula('基本导数公式')" 
+                class="mt-4 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🟩 基本积分公式 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="积分 基本 原函数">
+        <h3 class="text-xl font-bold text-green-600 mb-3">基本积分公式</h3>
+        <div class="space-y-2 text-sm bg-green-50 p-3 rounded">
+          <p>$$\int x^n \, dx = \frac{x^{n+1}}{n+1} + C$$</p>
+          <p>$$\int \frac{1}{x} \, dx = \ln|x| + C$$</p>
+          <p>$$\int e^x \, dx = e^x + C$$</p>
+          <p>$$\int \sin x \, dx = -\cos x + C$$</p>
+          <p>$$\int \cos x \, dx = \sin x + C$$</p>
+        </div>
+        <button onclick="copyFormula('基本积分公式')" 
+                class="mt-4 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+<!-- 🟪 泰勒展开（增强版 + 滑动查看） -->
+<div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="泰勒 级数 展开 麦克劳林 余项">
+  <h3 class="text-xl font-bold text-purple-600 mb-3">泰勒与麦克劳林展开</h3>
+  
+  <!-- 可滑动内容区域 -->
+  <div class="text-sm bg-purple-50 p-3 rounded" style="max-height: 280px; overflow-y: auto;">
+    
+    <!-- 通用泰勒公式 -->
+    <div class="border-b pb-3 mb-3">
+      <p class="font-semibold text-purple-800 mb-2">通用泰勒公式（带拉格朗日余项）</p>
+      <p>$$f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x)$$</p>
+      <p class="text-xs text-gray-600 mt-1">余项：$$R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-a)^{n+1}, \quad \xi \in (a,x)$$</p>
+    </div>
+
+    <!-- 麦克劳林级数 -->
+    <div class="border-b pb-3 mb-3">
+      <p class="font-semibold text-purple-800 mb-2">麦克劳林级数（a=0 特例）</p>
+      <p>$$f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(0)}{k!}x^k$$</p>
+    </div>
+
+    <!-- 常见函数展开 -->
+    <div class="mb-3">
+      <p class="font-semibold text-purple-800 mb-3">常见函数展开及收敛域</p>
+      
+      <div class="space-y-3">
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">指数函数：</p>
+          <p>$$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：全体实数 ℝ</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">正弦函数：</p>
+          <p>$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：全体实数 ℝ</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">余弦函数：</p>
+          <p>$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：全体实数 ℝ</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">自然对数：</p>
+          <p>$$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：$$x \in (-1, 1]$$</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">几何级数：</p>
+          <p>$$\frac{1}{1-x} = 1 + x + x^2 + x^3 + \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：$$|x| < 1$$</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">反正切：</p>
+          <p>$$\arctan x = x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：$$|x| \le 1$$</p>
+        </div>
+
+        <div class="border-l-4 border-purple-400 pl-2">
+          <p class="font-medium text-sm">二项式级数：</p>
+          <p>$$(1+x)^\alpha = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2!}x^2 + \cdots$$</p>
+          <p class="text-xs text-gray-500 italic">收敛域：$$|x| < 1$$</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 误差估计 -->
+    <div class="bg-purple-100 p-2 rounded">
+      <p class="font-semibold text-purple-800 mb-1">应用与误差估计</p>
+      <p class="text-xs">近似：$$f(x) \approx T_n(x)$$</p>
+      <p class="text-xs">误差界：$$|R_n(x)| \le \frac{M}{(n+1)!}|x-a|^{n+1}$$</p>
+    </div>
+  </div>
+  
+  <!-- 滚动提示 -->
+  <div class="text-xs text-purple-600 text-center mt-2">
+    <span class="inline-block animate-bounce">↓</span> 滑动查看更多内容
+  </div>
+  
+  <button onclick="copyFormula('泰勒展开公式')" 
+          class="mt-4 bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition">
+    复制全部 LaTeX
+  </button>
+</div>
+
+
+      <!-- 🔴 三角函数导数 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="导数 三角函数">
+        <h3 class="text-xl font-bold text-red-600 mb-3">三角函数导数</h3>
+        <div class="space-y-2 text-sm bg-red-50 p-3 rounded">
+          <p>$$(\tan x)' = \sec^2 x$$</p>
+          <p>$$(\cot x)' = -\csc^2 x$$</p>
+          <p>$$(\sec x)' = \sec x \tan x$$</p>
+          <p>$$(\csc x)' = -\csc x \cot x$$</p>
+        </div>
+        <button onclick="copyFormula('三角函数导数公式')" 
+                class="mt-4 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🟨 指数与对数函数 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="指数 对数 导数 积分">
+        <h3 class="text-xl font-bold text-yellow-600 mb-3">指数与对数函数</h3>
+        <div class="space-y-2 text-sm bg-yellow-50 p-3 rounded">
+          <p>$$(a^x)' = a^x \ln a$$</p>
+          <p>$$(\log_a x)' = \frac{1}{x \ln a}$$</p>
+          <p>$$\int a^x \, dx = \frac{a^x}{\ln a} + C$$</p>
+          <p>$$\int \ln x \, dx = x\ln x - x + C$$</p>
+        </div>
+        <button onclick="copyFormula('指数对数函数公式')" 
+                class="mt-4 bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🟤 反三角函数 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="反三角 导数">
+        <h3 class="text-xl font-bold text-amber-700 mb-3">反三角函数导数</h3>
+        <div class="space-y-2 text-sm bg-amber-50 p-3 rounded">
+          <p>$$(\arcsin x)' = \frac{1}{\sqrt{1-x^2}}$$</p>
+          <p>$$(\arccos x)' = -\frac{1}{\sqrt{1-x^2}}$$</p>
+          <p>$$(\arctan x)' = \frac{1}{1+x^2}$$</p>
+          <p>$$(\text{arccot } x)' = -\frac{1}{1+x^2}$$</p>
+        </div>
+        <button onclick="copyFormula('反三角函数导数')" 
+                class="mt-4 bg-amber-700 text-white px-3 py-1 rounded text-sm hover:bg-amber-800 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🔵 多元函数偏导数 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="多元 偏导 高阶">
+        <h3 class="text-xl font-bold text-blue-800 mb-3">多元函数偏导数</h3>
+        <div class="space-y-2 text-sm bg-blue-50 p-3 rounded">
+          <p>$$\frac{\partial}{\partial x}f(x,y) = \lim_{h\to0}\frac{f(x+h,y)-f(x,y)}{h}$$</p>
+          <p>$$\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x}\left(\frac{\partial f}{\partial y}\right)$$</p>
+          <p>$$\nabla f = \left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right)$$</p>
+        </div>
+        <button onclick="copyFormula('偏导数公式')" 
+                class="mt-4 bg-blue-800 text-white px-3 py-1 rounded text-sm hover:bg-blue-900 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🟢 重积分与曲线积分 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="重积分 曲线 曲面积分">
+        <h3 class="text-xl font-bold text-green-800 mb-3">积分进阶</h3>
+        <div class="space-y-2 text-sm bg-green-50 p-3 rounded">
+          <p>$$\iint_D f(x,y) \, dA = \int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y) \, dy \, dx$$</p>
+          <p>$$\oint_C \vec{F} \cdot d\vec{r}$$</p>
+          <p>$$\iint_S \vec{F} \cdot d\vec{S}$$</p>
+        </div>
+        <button onclick="copyFormula('重积分与曲线积分')" 
+                class="mt-4 bg-green-800 text-white px-3 py-1 rounded text-sm hover:bg-green-900 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+      <!-- 🟣 微分方程 -->
+      <div class="bg-white p-6 rounded-lg shadow formula-card hover:shadow-xl transition" data-tags="微分方程 常微分">
+        <h3 class="text-xl font-bold text-purple-800 mb-3">微分方程基础</h3>
+        <div class="space-y-2 text-sm bg-purple-50 p-3 rounded">
+          <p>一阶线性：$$y' + p(x)y = q(x)$$</p>
+          <p>解：$$y = e^{-\int p(x)dx}\left(\int q(x)e^{\int p(x)dx}dx + C\right)$$</p>
+          <p>二阶齐次：$$y'' + ay' + by = 0$$</p>
+        </div>
+        <button onclick="copyFormula('微分方程解法')" 
+                class="mt-4 bg-purple-800 text-white px-3 py-1 rounded text-sm hover:bg-purple-900 transition">
+          复制 LaTeX
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // 搜索功能
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const keyword = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.formula-card');
+      
+      cards.forEach(card => {
+        const tags = card.dataset.tags.toLowerCase();
+        const content = card.textContent.toLowerCase();
+        
+        if (tags.includes(keyword) || content.includes(keyword) || keyword === '') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+
+    // 复制公式功能
+    function copyFormula(formulaName) {
+      // 获取卡片内的所有公式
+      const card = event.target.closest('.formula-card');
+      const formulas = Array.from(card.querySelectorAll('p')).map(p => p.textContent).join('\n');
+      
+      navigator.clipboard.writeText(formulas).then(() => {
+        alert(`✅ "${formulaName}" 已复制到剪贴板！\n\n包含 ${formulas.split('\n').length} 个公式`);
+      }).catch(err => {
+        alert(`❌ 复制失败，请手动选择复制\n\n${formulas.substring(0, 100)}...`);
+      });
+    }
+  </script>
+</body>
+</html>

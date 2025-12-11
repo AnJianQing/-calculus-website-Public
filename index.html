@@ -7,15 +7,13 @@
   
   <!-- 数学公式 -->
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script>/* MathJax 配置 */</script>
+  <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
   
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- 自定义样式 -->
   <link rel="stylesheet" href="assets/css/style.css">
-  
-  <!-- 原来的 style 标签可以删除了 -->
 </head>
 <body class="bg-gray-50">
   <!-- 🎪 导航栏 -->
@@ -26,7 +24,9 @@
         <div class="space-x-4">
           <a href="index.html" class="hover:text-blue-600 transition">首页</a>
           <a href="pages/history.html" class="hover:text-blue-600 transition">发展史</a>
-          <a href="pages/lab.html" class="hover:text-blue-600 transition">可视化实验室</a>
+          <a href="pages/lab.html" class="hover:text-blue-600 transition">实验室</a>
+          <a href="pages/formula-list.html" class="hover:text-blue-600 transition">公式手册</a>
+          <a href="pages/quiz.html" class="hover:text-blue-600 transition">测验挑战</a>
         </div>
       </div>
     </div>
@@ -35,39 +35,38 @@
   <!-- 🎯 主要内容 -->
  <main class="container mx-auto px-6 py-8">
   <!-- 每日挑战卡片 -->
-<div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 text-white mb-12">
-  <h3 class="text-2xl font-bold mb-2">🎯 今日挑战</h3>
-  <p class="text-lg mb-4">计算极限：</p>
-  <div class="bg-white bg-opacity-20 p-4 rounded mb-4">
-    $$\lim_{x \to 0} \frac{\sin(3x)}{x}$$
+  <div class="card-3d bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 text-white mb-12">
+    <h3 class="text-2xl font-bold mb-2">🎯 今日挑战</h3>
+    <p class="text-lg mb-4">计算极限：</p>
+    <div class="bg-white bg-opacity-20 p-4 rounded mb-4">
+      $$\lim_{x \to 0} \frac{\sin(3x)}{x}$$
+    </div>
+    <button onclick="revealAnswer()" 
+            class="bg-white text-purple-600 px-4 py-2 rounded hover:bg-gray-100 transition">
+      查看答案
+    </button>
+    <div id="answer" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded">
+      <strong>解答：</strong> 使用等价无穷小 $\sin(3x) \sim 3x$，原式 = 3
+    </div>
   </div>
-  <button onclick="revealAnswer()" 
-          class="bg-white text-purple-600 px-4 py-2 rounded hover:bg-gray-100 transition">
-    查看答案
-  </button>
-  <div id="answer" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded">
-    <strong>解答：</strong> 使用等价无穷小 $\sin(3x) \sim 3x$，原式 = 3
-  </div>
-</div>
 
-<script>
-  function revealAnswer() {
-    document.getElementById('answer').classList.toggle('hidden');
-  }
-</script>
+  <script>
+    function revealAnswer() {
+      document.getElementById('answer').classList.toggle('hidden');
+    }
+  </script>
+
   <!-- 英雄区域 -->
   <div class="text-center py-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-    <h2 class="text-5xl font-bold text-gray-800 mb-4">
-      探索微积分的美丽
+    <h2 class="text-5xl font-bold text-center mb-8 hero-gradient text-white py-8 rounded-lg card-3d">
+      <span class="typewriter">探索微积分的美丽</span>
     </h2>
-    <p class="text-xl text-gray-600 mb-8">
-      从极限到无穷，从历史到应用
-    </p>
+    <p class="text-xl text-gray-600 mb-8">从极限到无穷，从历史到应用</p>
   </div>
 
   <!-- 功能卡片 -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-12">
-    <div class="card-hover bg-white p-6 rounded-lg shadow">
+    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
       <h3 class="text-2xl font-semibold mb-3 text-blue-600">📚 发展史</h3>
       <p class="text-gray-600 mb-4">了解从阿基米德到牛顿、莱布尼茨的完整故事</p>
       <a href="pages/history.html" class="text-blue-600 font-semibold hover:underline">
@@ -75,7 +74,7 @@
       </a>
     </div>
     
-    <div class="card-hover bg-white p-6 rounded-lg shadow">
+    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
       <h3 class="text-2xl font-semibold mb-3 text-green-600">🔬 可视化实验室</h3>
       <p class="text-gray-600 mb-4">用 GeoGebra 动态观察导数、积分的几何意义</p>
       <a href="pages/lab.html" class="text-green-600 font-semibold hover:underline">
@@ -83,13 +82,12 @@
       </a>
     </div>
     
-    <div class="card-hover bg-white p-6 rounded-lg shadow">
+    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
       <h3 class="text-2xl font-semibold mb-3 text-purple-600">🧮 公式手册</h3>
       <p class="text-gray-600 mb-4">常用导数、积分公式快速查询</p>
-      <button onclick="alert('模块开发中...')" 
-              class="text-purple-600 font-semibold hover:underline">
+      <a href="pages/formula-list.html" class="text-purple-600 font-semibold hover:underline">
         查看公式 →
-      </button>
+      </a>
     </div>
   </div>
 
@@ -107,7 +105,6 @@
     </div>
   </div>
 </main>
-
 
 </body>
 </html>

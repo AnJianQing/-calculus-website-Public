@@ -2,81 +2,527 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>发展史 - 微积分平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微积分发展史</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-      }
-    };
-  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* 详情展开动画 - 修正：增加最大高度 */
+    .details-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+    }
+    
+    .details-content.show {
+      max-height: 600px; /* 从400px增加到600px，确保内容完整显示 */
+      padding: 1.5rem;
+    }
+    
+    /* 入场动画 */
+    .timeline-item {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* 节点动画 */
+    .timeline-node {
+      transition: transform 0.3s ease;
+    }
+    
+    .timeline-node:hover {
+      transform: scale(1.1);
+    }
+    
+    /* 卡片悬停效果 */
+    .timeline-card {
+      transition: all 0.3s ease;
+    }
+    
+    .timeline-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    /* 百科链接悬停效果 */
+    .wiki-link {
+      transition: all 0.3s ease;
+      display: inline-flex !important; /* 确保链接始终显示 */
+    }
+    
+    .wiki-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-  <nav class="bg-white shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto px-6 py-3">
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+
+  <!-- 导航栏 -->
+  <nav class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
-        <div class="space-x-4">
-          <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">微积分探索</h1>
+        <div class="space-x-4 text-sm">
+          <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition">首页</a>
           <a href="history.html" class="text-blue-600 font-semibold">发展史</a>
-          <a href="lab.html" class="hover:text-blue-600 transition">可视化实验室</a>
+          <a href="lab.html" class="text-gray-700 hover:text-blue-600 transition">实验室</a>
+          <a href="formula-list.html" class="text-gray-700 hover:text-blue-600 transition">公式手册</a>
+          <a href="quiz.html" class="text-gray-700 hover:text-blue-600 transition">测验挑战</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <main class="container mx-auto px-6 py-8">
-    <h2 class="text-4xl font-bold text-center mb-12">微积分发展史</h2>
-    
-    <div class="max-w-4xl mx-auto">
-      <div class="space-y-8" id="timeline">
-        <!-- 时间线内容将通过JS加载 -->
+  <!-- 英雄区 -->
+  <section class="relative overflow-hidden py-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+    <div class="absolute inset-0 bg-black/10"></div>
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">微积分发展史</h1>
+      <p class="text-white/90 text-sm md:text-base max-w-2xl mx-auto">
+        从古希腊穷竭法到现代分析学，跨越两千年的思想演进之旅
+      </p>
+    </div>
+  </section>
+
+  <!-- 统计卡片 -->
+  <section class="container mx-auto px-4 -mt-6 mb-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">5</div>
+        <div class="text-xs text-gray-600">里程碑</div>
+      </div>
+      <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">6</div>
+        <div class="text-xs text-gray-600">数学巨匠</div>
+      </div>
+      <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent">2100</div>
+        <div class="text-xs text-gray-600">年跨度</div>
+      </div>
+      <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">∞</div>
+        <div class="text-xs text-gray-600">影响</div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <!-- 时间线内容 -->
+  <section class="container mx-auto px-4 pb-12">
+    <div class="relative">
+
+      <!-- 中央时间线 -->
+      <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-600 via-purple-600 to-pink-600 rounded-full"></div>
+      <div class="md:hidden absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-600 via-purple-600 to-pink-600 rounded-full"></div>
+
+      <!-- 项目列表 -->
+      <div class="space-y-8" id="timeline">
+
+        <!-- 阿基米德卡片 -->
+        <div class="relative flex items-center md:justify-between timeline-item">
+          <div class="hidden md:block w-5/12">
+            <div class="timeline-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-white/20">
+              <!-- 头部信息 -->
+              <div class="flex items-center mb-3">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=archimedes" alt="阿基米德" class="w-12 h-12 rounded-full mr-4 border-2 border-yellow-400 shadow-sm">
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold text-gray-800">公元前250年</h3>
+                      <p class="font-semibold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">阿基米德</p>
+                    </div>
+                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">古希腊</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主要内容 -->
+              <p class="text-gray-700 text-sm mb-3 leading-relaxed">利用穷竭法计算圆面积，首次将无限过程引入精确计算，为微积分奠定哲学基础。</p>
+
+              <!-- 公式图片 -->
+              <div class="bg-yellow-50/70 p-3 rounded-lg border border-yellow-200 mb-3">
+                <img src="https://latex.codecogs.com/svg.latex?%5Clim_%7Bn%20%5Cto%20%5Cinfty%7D%20A_n%20%3D%20%5Cpi%20r%5E2" alt="穷竭法公式" class="w-full h-8">
+              </div>
+
+              <!-- 详情入口按钮 -->
+              <button onclick="toggleDetails('archimedes')" class="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center transition py-2 bg-blue-50 rounded-lg hover:bg-blue-100">
+                <i class="fas fa-chevron-down mr-1" id="archimedes-icon"></i>
+                <span id="archimedes-btn">点击查看详细贡献</span>
+              </button>
+
+              <!-- 详情面板 - 修正结构 -->
+              <div id="archimedes-details" class="details-content">
+                <div class="mt-3 p-3 bg-yellow-50/50 rounded-lg border border-yellow-200">
+                  <!-- 核心思想 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-yellow-700">
+                      <i class="fas fa-lightbulb mr-2 text-yellow-500"></i> 核心思想
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">通过内接和外切正多边形逼近圆形，当边数趋于无穷时，多边形面积精确等于圆面积。这是人类首次将无限过程转化为精确计算。</p>
+                  </div>
+
+                  <!-- 历史意义 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-purple-700">
+                      <i class="fas fa-trophy mr-2 text-purple-500"></i> 历史地位
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">阿基米德被公认为"古代最伟大的数学家"，他的穷竭法为2000年后微积分的诞生提供了哲学基础和方法论原型。</p>
+                  </div>
+
+                  <!-- 代表作品 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-blue-700">
+                      <i class="fas fa-book mr-2 text-blue-500"></i> 代表作品
+                    </h4>
+                    <ul class="text-xs text-gray-700 space-y-1">
+                      <li>• 《圆的度量》- 计算圆周率</li>
+                      <li>• 《抛物线求积法》- 积分思想萌芽</li>
+                      <li>• 《论螺线》- 研究曲线性质</li>
+                      <li>• 《论球和圆柱》- 几何体积计算</li>
+                    </ul>
+                  </div>
+
+                  <!-- 大英百科全书链接 - 确保可见 -->
+                  <div class="pt-2 border-t border-yellow-200 mt-4">
+                    <a href="https://www.britannica.com/biography/Archimedes" target="_blank" class="wiki-link inline-flex items-center text-xs bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition">
+                      <i class="fas fa-external-link-alt mr-2"></i> 查看大英百科全书
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 时间节点 -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 md:w-14 md:h-14 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white timeline-node">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+        </div>
+
+        <!-- 牛顿卡片 -->
+        <div class="relative flex items-center md:justify-between timeline-item">
+          <div class="hidden md:block w-5/12 ml-auto">
+            <div class="timeline-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-white/20">
+              <!-- 头部信息 -->
+              <div class="flex items-center mb-3">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=newton" alt="牛顿" class="w-12 h-12 rounded-full mr-4 border-2 border-blue-400 shadow-sm">
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold text-gray-800">1666年</h3>
+                      <p class="font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">艾萨克·牛顿</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">英国</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主要内容 -->
+              <p class="text-gray-700 text-sm mb-3 leading-relaxed">在瘟疫隔离期间发明流数术，创立变化率理论，同期完成万有引力和光学三大发现。</p>
+
+              <!-- 公式图片 -->
+              <div class="bg-blue-50/70 p-3 rounded-lg border border-blue-200 mb-3">
+                <img src="https://latex.codecogs.com/svg.latex?%5Cfrac%7Bdy%7D%7Bdx%7D%20%3D%20%5Clim_%7B%5CDelta%20x%20%5Cto%200%7D%20%5Cfrac%7B%5CDelta%20y%7D%7B%5CDelta%20x%7D" alt="导数定义" class="w-full h-8">
+              </div>
+
+              <!-- 详情入口 -->
+              <button onclick="toggleDetails('newton')" class="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center transition py-2 bg-blue-50 rounded-lg hover:bg-blue-100">
+                <i class="fas fa-chevron-down mr-1" id="newton-icon"></i>
+                <span id="newton-btn">点击查看传奇故事</span>
+              </button>
+
+              <!-- 详情面板 -->
+              <div id="newton-details" class="details-content">
+                <div class="mt-3 p-3 bg-blue-50/50 rounded-lg border border-blue-200">
+                  <!-- 瘟疫奇迹 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-green-700">
+                      <i class="fas fa-leaf mr-2 text-green-500"></i> 瘟疫奇迹
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">24岁的牛顿在乡下隔离两年，完成了人类历史上最伟大的科学突破，包括微积分、万有引力定律和光谱分析，这段时期被称为牛顿的"奇迹年"。</p>
+                  </div>
+
+                  <!-- 流数法核心 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-blue-700">
+                      <i class="fas fa-flask mr-2 text-blue-500"></i> 流数法核心
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">用"瞬"（无穷小量）描述变化率，通过"消去"法则解决切线问题和面积问题，建立微积分基本定理原型。</p>
+                  </div>
+
+                  <!-- 大英百科全书链接 -->
+                  <div class="pt-2 border-t border-blue-200 mt-4">
+                    <a href="https://www.britannica.com/biography/Isaac-Newton" target="_blank" class="wiki-link inline-flex items-center text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                      <i class="fas fa-external-link-alt mr-2"></i> 查看大英百科全书
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 时间节点 -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 md:w-14 md:h-14 w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white timeline-node">
+            <i class="fas fa-apple-alt"></i>
+          </div>
+        </div>
+
+        <!-- 莱布尼茨卡片 -->
+        <div class="relative flex items-center md:justify-between timeline-item">
+          <div class="hidden md:block w-5/12">
+            <div class="timeline-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-white/20">
+              <!-- 头部信息 -->
+              <div class="flex items-center mb-3">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=leibniz" alt="莱布尼茨" class="w-12 h-12 rounded-full mr-4 border-2 border-green-400 shadow-sm">
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold text-gray-800">1684年</h3>
+                      <p class="font-semibold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">戈特弗里德·莱布尼茨</p>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">德国</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主要内容 -->
+              <p class="text-gray-700 text-sm mb-3 leading-relaxed">独立发明微积分，创立现代符号体系 (∫, dx, dy/dx)，数学表达的优雅性至今无人能及。</p>
+
+              <!-- 公式图片 -->
+              <div class="bg-green-50/70 p-3 rounded-lg border border-green-200 mb-3">
+                <img src="https://latex.codecogs.com/svg.latex?%5Cint%20x%20%5C%2C%20dx%20%3D%20%5Cfrac%7Bx%5E2%7D%7B2%7D%20%2B%20C" alt="积分公式" class="w-full h-8">
+              </div>
+
+              <!-- 详情入口 -->
+              <button onclick="toggleDetails('leibniz')" class="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center transition py-2 bg-green-50 rounded-lg hover:bg-green-100">
+                <i class="fas fa-chevron-down mr-1" id="leibniz-icon"></i>
+                <span id="leibniz-btn">点击查看符号创新</span>
+              </button>
+
+              <!-- 详情面板 -->
+              <div id="leibniz-details" class="details-content">
+                <div class="mt-3 p-3 bg-green-50/50 rounded-lg border border-green-200">
+                  <!-- 符号革命 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-purple-700">
+                      <i class="fas fa-pen-fancy mr-2 text-purple-500"></i> 符号革命
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">莱布尼茨创造的符号体系不仅优雅，更具启发性：∫ 表示求和，dx 表示无穷小量，这些符号体现了微积分的本质思想，至今仍在使用。</p>
+                  </div>
+
+                  <!-- 深远影响 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-blue-700">
+                      <i class="fas fa-globe mr-2 text-blue-500"></i> 深远影响
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">他的符号被欧洲大陆广泛接受，使微积分迅速传播到物理、工程等领域，加速了科学革命进程，与牛顿的争议也推动了数学发展。</p>
+                  </div>
+
+                  <!-- 大英百科全书链接 -->
+                  <div class="pt-2 border-t border-green-200 mt-4">
+                    <a href="https://www.britannica.com/biography/Gottfried-Wilhelm-Leibniz" target="_blank" class="wiki-link inline-flex items-center text-xs bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">
+                      <i class="fas fa-external-link-alt mr-2"></i> 查看大英百科全书
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 时间节点 -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 md:w-14 md:h-14 w-10 h-10 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white timeline-node">
+            <i class="fas fa-feather-alt"></i>
+          </div>
+        </div>
+
+        <!-- 柯西卡片 -->
+        <div class="relative flex items-center md:justify-between timeline-item">
+          <div class="hidden md:block w-5/12 ml-auto">
+            <div class="timeline-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-white/20">
+              <!-- 头部信息 -->
+              <div class="flex items-center mb-3">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=cauchy" alt="柯西" class="w-12 h-12 rounded-full mr-4 border-2 border-pink-400 shadow-sm">
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold text-gray-800">1821年</h3>
+                      <p class="font-semibold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">奥古斯丁-路易·柯西</p>
+                    </div>
+                    <span class="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">法国</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主要内容 -->
+              <p class="text-gray-700 text-sm mb-3 leading-relaxed">建立极限ε-δ定义，严格化微积分基础，终结了200年的理论混乱状态。</p>
+
+              <div class="bg-pink-50/70 p-3 rounded-lg border border-pink-200 mb-3">
+                <img src="https://latex.codecogs.com/svg.latex?%5Cforall%20%5Cvarepsilon%20%3E%200%2C%20%5Cexists%20%5Cdelta%20%3E%200" alt="柯西定义" class="w-full h-8">
+              </div>
+
+              <!-- 详情入口 -->
+              <button onclick="toggleDetails('cauchy')" class="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center transition py-2 bg-pink-50 rounded-lg hover:bg-pink-100">
+                <i class="fas fa-chevron-down mr-1" id="cauchy-icon"></i>
+                <span id="cauchy-btn">点击查看严格化贡献</span>
+              </button>
+
+              <!-- 详情面板 -->
+              <div id="cauchy-details" class="details-content">
+                <div class="mt-3 p-3 bg-pink-50/50 rounded-lg border border-pink-200">
+                  <!-- ε-δ语言 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-gray-700">
+                      <i class="fas fa-cogs mr-2 text-gray-500"></i> ε-δ语言
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">柯西创造的ε-δ语言将模糊的"无穷小"概念转化为精确的量化描述，这是数学史上最伟大的严格化运动之一，至今仍是分析学的基础。</p>
+                  </div>
+
+                  <!-- 现代分析之父 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-purple-700">
+                      <i class="fas fa-building mr-2 text-purple-500"></i> 现代分析之父
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">他定义的连续性、可微性、积分成为现代数学分析的基石，被誉为"现代分析之父"，影响至今。</p>
+                  </div>
+
+                  <!-- 大英百科全书链接 -->
+                  <div class="pt-2 border-t border-pink-200 mt-4">
+                    <a href="https://www.britannica.com/biography/Augustin-Louis-Baron-Cauchy" target="_blank" class="wiki-link inline-flex items-center text-xs bg-pink-600 text-white px-3 py-1 rounded hover:bg-pink-700 transition">
+                      <i class="fas fa-external-link-alt mr-2"></i> 查看大英百科全书
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="absolute left-1/2 transform -translate-x-1/2 md:w-14 md:h-14 w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white timeline-node">
+            <i class="fas fa-ruler-combined"></i>
+          </div>
+        </div>
+
+        <!-- 黎曼卡片 -->
+        <div class="relative flex items-center md:justify-between timeline-item">
+          <div class="hidden md:block w-5/12">
+            <div class="timeline-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-white/20">
+              <!-- 头部信息 -->
+              <div class="flex items-center mb-3">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=riemann" alt="黎曼" class="w-12 h-12 rounded-full mr-4 border-2 border-indigo-400 shadow-sm">
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold text-gray-800">1854年</h3>
+                      <p class="font-semibold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">伯恩哈德·黎曼</p>
+                    </div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">德国</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主要内容 -->
+              <p class="text-gray-700 text-sm mb-3 leading-relaxed">提出黎曼和概念，将积分推广到更广泛的函数类，为非欧几何和相对论奠基。</p>
+
+              <div class="bg-indigo-50/70 p-3 rounded-lg border border-indigo-200 mb-3">
+                <img src="https://latex.codecogs.com/svg.latex?%5Cint_a%5Eb%20f(x)%20dx%20%3D%20%5Clim_%7B%5Clambda%20%5Cto%200%7D%20%5Csum_%7Bi%3D1%7D%5En%20f(%5Cxi_i)%20%5CDelta%20x_i" alt="黎曼和" class="w-full h-10">
+              </div>
+
+              <button onclick="toggleDetails('riemann')" class="w-full text-xs text-blue-600 hover:text-blue-800 flex items-center justify-center transition py-2 bg-indigo-50 rounded-lg hover:bg-indigo-100">
+                <i class="fas fa-chevron-down mr-1" id="riemann-icon"></i>
+                <span id="riemann-btn">点击查看积分革命</span>
+              </button>
+
+              <div id="riemann-details" class="details-content">
+                <div class="mt-3 p-3 bg-indigo-50/50 rounded-lg border border-indigo-200">
+                  <!-- 积分革命 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-indigo-700">
+                      <i class="fas fa-infinity mr-2 text-indigo-500"></i> 积分革命
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">黎曼和让积分适用于不连续函数甚至病态函数，极大扩展了微积分的应用领域，为现代测度论和概率论奠定基础。</p>
+                  </div>
+
+                  <!-- 超越欧几里得 -->
+                  <div class="mb-4">
+                    <h4 class="font-bold text-sm mb-2 flex items-center text-green-700">
+                      <i class="fas fa-globe-americas mr-2 text-green-500"></i> 超越欧几里得
+                    </h4>
+                    <p class="text-xs text-gray-700 leading-relaxed">黎曼几何为爱因斯坦相对论提供了数学框架，改变了人类对时空的认知，影响延续至今。</p>
+                  </div>
+
+                  <!-- 大英百科全书链接 -->
+                  <div class="pt-2 border-t border-indigo-200 mt-4">
+                    <a href="https://www.britannica.com/biography/Bernhard-Riemann" target="_blank" class="wiki-link inline-flex items-center text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 transition">
+                      <i class="fas fa-external-link-alt mr-2"></i> 查看大英百科全书
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="absolute left-1/2 transform -translate-x-1/2 md:w-14 md:h-14 w-10 h-10 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white timeline-node">
+            <i class="fas fa-infinity"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-white/50 backdrop-blur-sm py-8 mt-12 border-t border-gray-200">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-gray-600 text-sm">微积分发展永不止步 • 每一个极限都是新起点</p>
+    </div>
+  </footer>
 
   <script>
-    // 时间线数据
-    const timelineData = [
-      { year: "公元前250年", event: "阿基米德使用穷竭法计算圆面积", mathematician: "阿基米德" },
-      { year: "1666年", event: "牛顿发明流数术（微积分雏形）", mathematician: "牛顿" },
-      { year: "1684年", event: "莱布尼茨发表第一篇微积分论文", mathematician: "莱布尼茨" },
-      { year: "1821年", event: "柯西用极限概念严格化微积分", mathematician: "柯西" },
-      { year: "1854年", event: "黎曼提出黎曼积分定义", mathematician: "黎曼" }
-    ];
-
-    // 渲染时间线
-    const container = document.getElementById('timeline');
-    timelineData.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'flex items-center';
-      div.innerHTML = `
-        <div class="flex-1 text-right pr-8">
-          ${index % 2 === 0 ? `
-            <h3 class="text-2xl font-bold text-gray-800">${item.year}</h3>
-            <p class="text-gray-600">${item.event}</p>
-            <p class="text-blue-600 font-semibold">${item.mathematician}</p>
-          ` : ''}
-        </div>
-        <div class="timeline-dot"></div>
-        <div class="flex-1 pl-8">
-          ${index % 2 !== 0 ? `
-            <h3 class="text-2xl font-bold text-gray-800">${item.year}</h3>
-            <p class="text-gray-600">${item.event}</p>
-            <p class="text-blue-600 font-semibold">${item.mathematician}</p>
-          ` : ''}
-        </div>
-      `;
-      container.appendChild(div);
-    });
-
-    // 重新渲染MathJax
-    if (window.MathJax) {
-      MathJax.typesetPromise();
+    // 切换详情函数
+    function toggleDetails(id) {
+      const details = document.getElementById(id + '-details');
+      const button = details.previousElementSibling;
+      const icon = button.querySelector('i');
+      const text = button.querySelector('span');
+      
+      if (details.classList.contains('show')) {
+        details.classList.remove('show');
+        icon.className = 'fas fa-chevron-down mr-1';
+        text.textContent = text.textContent.replace('收起', '点击查看');
+      } else {
+        details.classList.add('show');
+        icon.className = 'fas fa-chevron-up mr-1';
+        text.textContent = text.textContent.replace('点击查看', '收起');
+      }
+      
+      // 平滑滚动到详情区域
+      if (details.classList.contains('show')) {
+        details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
+
+    // 入场动画
+    document.addEventListener('DOMContentLoaded', function() {
+      const items = document.querySelectorAll('.timeline-item');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 100);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      items.forEach(item => observer.observe(item));
+    });
   </script>
+
 </body>
 </html>
