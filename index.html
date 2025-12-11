@@ -6,8 +6,15 @@
   <title>微积分学习平台</title>
   
   <!-- 数学公式 -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']], // 支持两种格式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -33,78 +40,79 @@
   </nav>
 
   <!-- 🎯 主要内容 -->
- <main class="container mx-auto px-6 py-8">
-  <!-- 每日挑战卡片 -->
-  <div class="card-3d bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 text-white mb-12">
-    <h3 class="text-2xl font-bold mb-2">🎯 今日挑战</h3>
-    <p class="text-lg mb-4">计算极限：</p>
-    <div class="bg-white bg-opacity-20 p-4 rounded mb-4">
-      $$\lim_{x \to 0} \frac{\sin(3x)}{x}$$
-    </div>
-    <button onclick="revealAnswer()" 
-            class="bg-white text-purple-600 px-4 py-2 rounded hover:bg-gray-100 transition">
-      查看答案
-    </button>
-    <div id="answer" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded">
-      <strong>解答：</strong> 使用等价无穷小 $\sin(3x) \sim 3x$，原式 = 3
-    </div>
-  </div>
-
-  <script>
-    function revealAnswer() {
-      document.getElementById('answer').classList.toggle('hidden');
-    }
-  </script>
-
-  <!-- 英雄区域 -->
-  <div class="text-center py-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-    <h2 class="text-5xl font-bold text-center mb-8 hero-gradient text-white py-8 rounded-lg card-3d">
-      <span class="typewriter">探索微积分的美丽</span>
-    </h2>
-    <p class="text-xl text-gray-600 mb-8">从极限到无穷，从历史到应用</p>
-  </div>
-
-  <!-- 功能卡片 -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-12">
-    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
-      <h3 class="text-2xl font-semibold mb-3 text-blue-600">📚 发展史</h3>
-      <p class="text-gray-600 mb-4">了解从阿基米德到牛顿、莱布尼茨的完整故事</p>
-      <a href="pages/history.html" class="text-blue-600 font-semibold hover:underline">
-        开始学习 →
-      </a>
-    </div>
-    
-    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
-      <h3 class="text-2xl font-semibold mb-3 text-green-600">🔬 可视化实验室</h3>
-      <p class="text-gray-600 mb-4">用 GeoGebra 动态观察导数、积分的几何意义</p>
-      <a href="pages/lab.html" class="text-green-600 font-semibold hover:underline">
-        进入实验室 →
-      </a>
-    </div>
-    
-    <div class="card-3d bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
-      <h3 class="text-2xl font-semibold mb-3 text-purple-600">🧮 公式手册</h3>
-      <p class="text-gray-600 mb-4">常用导数、积分公式快速查询</p>
-      <a href="pages/formula-list.html" class="text-purple-600 font-semibold hover:underline">
-        查看公式 →
-      </a>
-    </div>
-  </div>
-
-  <!-- 今日公式 -->
-  <div class="bg-white p-8 rounded-lg shadow max-w-2xl mx-auto">
-    <h3 class="text-2xl font-semibold mb-4 text-center">今日微积分公式</h3>
-    <div class="text-center">
-      <p>导数的极限定义：</p>
-      <div class="my-4 p-4 bg-gray-50 rounded">
-        $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+  <main class="container mx-auto px-6 py-8">
+    <!-- 每日挑战卡片 -->
+    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 text-white mb-12">
+      <h3 class="text-2xl font-bold mb-2">🎯 今日挑战</h3>
+      <p class="text-lg mb-4">计算极限：</p>
+      <div class="bg-white bg-opacity-20 p-4 rounded mb-4">
+        $$\lim_{x \to 0} \frac{\sin(3x)}{x}$$
       </div>
-      <p class="text-sm text-gray-600">
-        拖动下方的滑块观察割线如何逼近切线
-      </p>
+      <button onclick="revealAnswer()" 
+              class="bg-white text-purple-600 px-4 py-2 rounded hover:bg-gray-100 transition">
+        查看答案
+      </button>
+      <div id="answer" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded">
+        <strong>解答：</strong> 使用等价无穷小 \(\sin(3x) \sim 3x\)，原式 = 3
+      </div>
     </div>
-  </div>
-</main>
+
+    <script>
+      function revealAnswer() {
+        document.getElementById('answer').classList.toggle('hidden');
+      }
+    </script>
+
+    <!-- 英雄区域 -->
+    <div class="text-center py-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+      <h2 class="text-5xl font-bold text-center mb-8 text-blue-800 py-8 rounded-lg">
+        <span class="typewriter">探索微积分的美丽</span>
+      </h2>
+      <p class="text-xl text-gray-600 mb-8">从极限到无穷，从历史到应用</p>
+    </div>
+
+    <!-- 功能卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-12">
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+        <h3 class="text-2xl font-semibold mb-3 text-blue-600">📚 发展史</h3>
+        <p class="text-gray-600 mb-4">了解从阿基米德到牛顿、莱布尼茨的完整故事</p>
+        <a href="pages/history.html" class="text-blue-600 font-semibold hover:underline">
+          开始学习 →
+        </a>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+        <h3 class="text-2xl font-semibold mb-3 text-green-600">🔬 可视化实验室</h3>
+        <p class="text-gray-600 mb-4">用 GeoGebra 动态观察导数、积分的几何意义</p>
+        <a href="pages/lab.html" class="text-green-600 font-semibold hover:underline">
+          进入实验室 →
+        </a>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition">
+        <h3 class="text-2xl font-semibold mb-3 text-purple-600">🧮 公式手册</h3>
+        <p class="text-gray-600 mb-4">常用导数、积分公式快速查询</p>
+        <a href="pages/formula-list.html" class="text-purple-600 font-semibold hover:underline">
+          查看公式 →
+        </a>
+      </div>
+    </div>
+
+    <!-- 今日公式 -->
+    <div class="bg-white p-8 rounded-lg shadow max-w-2xl mx-auto">
+      <h3 class="text-2xl font-semibold mb-4 text-center">今日微积分公式</h3>
+      <div class="text-center">
+        <p>导数的极限定义：</p>
+        <div class="my-4 p-4 bg-gray-50 rounded">
+          $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+        </div>
+        <p class="text-sm text-gray-600">
+          拖动下方的滑块观察割线如何逼近切线
+        </p>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>
+
