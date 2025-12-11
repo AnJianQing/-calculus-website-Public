@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>可视化实验室 - 微积分平台</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- MathJax 数学公式 -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+
+  <style>
+    /* 加载动画 */
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
+        <div class="space-x-4">
+          <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
+          <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
+          <a href="lab.html" class="text-blue-600 font-semibold">可视化实验室</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主要内容 -->
+  <main class="container mx-auto px-6 py-8">
+    <h2 class="text-4xl font-bold text-center mb-8">动态可视化实验室</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 左侧：控制面板 -->
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-xl font-bold mb-4">选择实验</h3>
+        <select id="experiment-selector" class="w-full p-2 border rounded">
+          <option value="">-- 请选择 --</option>
+          <option value="derivative">导数定义动画</option>
+          <option value="integral">定积分演示</option>
+          <option value="taylor">泰勒级数</option>
+        </select>
+        
+        <div class="mt-6 p-4 bg-blue-50 rounded">
+          <p class="text-sm text-gray-700">
+            💡 <strong>提示：</strong> 选择实验后，右侧会加载交互式图形。
+          </p>
+        </div>
+
+        <!-- 快速链接 -->
+        <div class="mt-6">
+          <h4 class="font-semibold mb-2">快速演示</h4>
+          <button onclick="loadDirectEmbed()" 
+                  class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+            加载你的 GeoGebra
+          </button>
+        </div>
+      </div>
+      
+      <!-- 右侧：GeoGebra 容器 -->
+      <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
+        <div id="applet-container" class="text-center">
+          <p class="text-gray-500 py-12">请选择左侧实验开始</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 单独测试区域（直接粘贴你的 iframe） -->
+    <div class="mt-12 bg-white p-6 rounded-lg shadow">
+      <h3 class="text-2xl font-semibold text-center mb-4">直接嵌入测试</h3>
+      <div class="flex justify-center">
+        <iframe src="https://www.geogebra.org/classic/eara9vcc?embed" 
+                width="800" 
+                height="600" 
+                allowfullscreen 
+                style="border: 1px solid #e4e4e4;border-radius: 4px;" 
+                frameborder="0">
+        </iframe>
+      </div>
+      <p class="text-center text-sm text-gray-600 mt-2">
+        这是你提供的 GeoGebra 图形
+      </p>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    // 实验配置（使用 Material ID）
+    const experiments = {
+      derivative: {
+        name: "导数定义",
+        materialId: "eara9vcc",  // 你提供的 ID
+        width: 800,
+        height: 600
+      },
+      integral: {
+        name: "定积分",
+        materialId: "dtm5p9uz",  // 另一个示例
+        width: 800,
+        height: 500
+      },
+      taylor: {
+        name: "泰勒级数",
+        materialId: "v3yzd5v9",
+        width: 800,
+        height: 600
+      }
+    };
+
+    // 动态加载函数（推荐）
+    function embedGeoGebra(containerId, materialId, width, height) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      // 显示加载动画
+      container.innerHTML = `
+        <div class="flex items-center justify-center py-12">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span class="ml-3 text-gray-600">正在加载 GeoGebra...</span>
+        </div>
+      `;
+
+      // 使用官方 iframe 嵌入
+      setTimeout(() => {
+        container.innerHTML = `
+          <div>
+            <h3 class="text-lg font-semibold mb-4">${experiments[materialId]?.name || 'GeoGebra 演示'}</h3>
+            <iframe src="https://www.geogebra.org/material/iframe/id/${materialId}/width/${width}/height/${height}" 
+                    width="${width}" 
+                    height="${height}" 
+                    style="border: 1px solid #e4e4e4; border-radius: 8px;" 
+                    frameborder="0">
+            </iframe>
+            <p class="text-sm text-gray-500 mt-2">
+              💡 拖动滑块进行交互
+            </p>
+          </div>
+        `;
+      }, 500);
+    }
+
+    // 加载你的直接嵌入
+    function loadDirectEmbed() {
+      const container = document.getElementById('applet-container');
+      container.innerHTML = `
+        <div>
+          <h3 class="text-lg font-semibold mb-4">你的 GeoGebra 图形</h3>
+          <iframe src="https://www.geogebra.org/classic/eara9vcc?embed" 
+                  width="800" 
+                  height="600" 
+                  allowfullscreen 
+                  style="border: 1px solid #e4e4e4;border-radius: 4px;" 
+                  frameborder="0">
+          </iframe>
+        </div>
+      `;
+    }
+
+    // 事件监听（下拉菜单）
+    document.getElementById('experiment-selector').addEventListener('change', (e) => {
+      const key = e.target.value;
+      if (key && experiments[key]) {
+        const exp = experiments[key];
+        embedGeoGebra('applet-container', exp.materialId, exp.width, exp.height);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>发展史 - 微积分平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+</head>
+<body class="bg-gray-50">
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
+        <div class="space-x-4">
+          <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
+          <a href="history.html" class="text-blue-600 font-semibold">发展史</a>
+          <a href="lab.html" class="hover:text-blue-600 transition">可视化实验室</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mx-auto px-6 py-8">
+    <h2 class="text-4xl font-bold text-center mb-12">微积分发展史</h2>
+    
+    <div class="max-w-4xl mx-auto">
+      <div class="space-y-8" id="timeline">
+        <!-- 时间线内容将通过JS加载 -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 时间线数据
+    const timelineData = [
+      { year: "公元前250年", event: "阿基米德使用穷竭法计算圆面积", mathematician: "阿基米德" },
+      { year: "1666年", event: "牛顿发明流数术（微积分雏形）", mathematician: "牛顿" },
+      { year: "1684年", event: "莱布尼茨发表第一篇微积分论文", mathematician: "莱布尼茨" },
+      { year: "1821年", event: "柯西用极限概念严格化微积分", mathematician: "柯西" },
+      { year: "1854年", event: "黎曼提出黎曼积分定义", mathematician: "黎曼" }
+    ];
+
+    // 渲染时间线
+    const container = document.getElementById('timeline');
+    timelineData.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'flex items-center';
+      div.innerHTML = `
+        <div class="flex-1 text-right pr-8">
+          ${index % 2 === 0 ? `
+            <h3 class="text-2xl font-bold text-gray-800">${item.year}</h3>
+            <p class="text-gray-600">${item.event}</p>
+            <p class="text-blue-600 font-semibold">${item.mathematician}</p>
+          ` : ''}
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="flex-1 pl-8">
+          ${index % 2 !== 0 ? `
+            <h3 class="text-2xl font-bold text-gray-800">${item.year}</h3>
+            <p class="text-gray-600">${item.event}</p>
+            <p class="text-blue-600 font-semibold">${item.mathematician}</p>
+          ` : ''}
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    // 重新渲染MathJax
+    if (window.MathJax) {
+      MathJax.typesetPromise();
+    }
+  </script>
+</body>
+</html>

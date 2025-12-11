@@ -1,0 +1,62 @@
+/* 全局样式 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 导航栏动画 */
+nav a {
+  position: relative;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #2563eb;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  background: #2563eb;
+  transition: all 0.3s;
+}
+
+nav a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* 时间线样式 */
+.timeline-dot {
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 加载动画 */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .timeline-dot {
+    margin: 0 auto;
+  }
+}
