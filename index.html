@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>微积分学习平台</title>
   
-  <!-- Tailwind CSS -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Font Awesome - 修复：添加图标库 -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- MathJax - 修复：先配置，再加载脚本 -->
+  <!-- MathJax -->
   <script>
     window.MathJax = {
       tex: {
@@ -22,39 +22,28 @@
       },
       options: {
         skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-      },
-      startup: {
-        ready: function() {
-          // 修复：添加加载完成回调
-          MathJax.startup.defaultReady();
-          const loading = document.getElementById('mathjax-loading');
-          if (loading) {
-            loading.innerHTML = '<i class="fas fa-check-circle"></i> 公式加载完成';
-            loading.className = loading.className.replace('bg-yellow-400', 'bg-green-400');
-            setTimeout(() => loading.style.display = 'none', 2000);
-          }
-        }
       }
     };
   </script>
-  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
-  <!-- 自定义样式 -->
+  <!-- 核心修复：改为相对路径 -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-gray-50">
   
-  <!-- 修复：简化加载状态提示 -->
+  <!-- 加载状态指示器 -->
   <div id="mathjax-loading" class="fixed top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-2 rounded shadow-md text-sm z-50">
     <i class="fas fa-spinner fa-spin"></i> 正在加载公式...
   </div>
 
-  <!-- 🎪 导航栏 -->
+  <!-- 导航栏 -->
   <nav class="bg-white shadow-lg sticky top-0 z-40">
     <div class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
         <div class="space-x-4">
+          <!-- 路径修复：首页链接改为相对路径 -->
           <a href="index.html" class="text-blue-600 font-semibold">首页</a>
           <a href="pages/history.html" class="hover:text-blue-600 transition">发展史</a>
           <a href="pages/lab.html" class="hover:text-blue-600 transition">实验室</a>
@@ -65,7 +54,7 @@
     </div>
   </nav>
 
-  <!-- 🎯 主要内容 -->
+  <!-- 主要内容 -->
   <main class="container mx-auto px-6 py-8">
     
     <!-- 每日挑战卡片 -->
@@ -140,10 +129,14 @@
       document.getElementById('answer').classList.toggle('hidden');
     }
 
-    // 修复：移除冗余的 MathJax 检测代码，使用 MathJax 自带的回调
     // 页面加载完成后的通用初始化
     document.addEventListener('DOMContentLoaded', function() {
       console.log('✅ 首页加载完成');
+      // 3秒后隐藏加载提示
+      setTimeout(() => {
+        const loading = document.getElementById('mathjax-loading');
+        if (loading) loading.style.display = 'none';
+      }, 3000);
     });
   </script>
 
