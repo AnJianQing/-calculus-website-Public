@@ -5,68 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>微积分学习平台</title>
   
-  <!-- Tailwind CSS -->
+  <!-- CDN 依赖（绝对路径，100% 可靠） -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   
-  <!-- MathJax - 核心修复：移除备用方案，仅用稳定 CDN -->
+  <!-- 内联样式（不再需要外部 CSS 文件） -->
+  <style>
+    .hero-gradient {
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .typewriter {
+      overflow: hidden; border-right: .15em solid orange;
+      white-space: nowrap; margin: 0 auto; letter-spacing: .15em;
+      animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: orange; } }
+    .animate-spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #math-quote, #quote-author { transition: opacity 0.5s ease; }
+  </style>
+  
+  <!-- MathJax 配置（内联，确保加载） -->
   <script>
     window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true,
-        processEnvironments: true
-      },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-        renderActions: {
-          findScript: [10, function (doc) {
-            document.getElementById('mathjax-loading')?.classList.add('hidden');
-          }, '']
-        }
-      },
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] },
       startup: {
         ready: function() {
           MathJax.startup.defaultReady();
-          // 公式渲染完成后隐藏提示
           MathJax.startup.promise.then(() => {
             const loading = document.getElementById('mathjax-loading');
-            if (loading) {
-              loading.innerHTML = '<i class="fas fa-check-circle"></i> 公式加载完成';
-              loading.className = loading.className.replace('bg-yellow-400', 'bg-green-400');
-              setTimeout(() => loading.style.display = 'none', 1500);
-            }
+            if (loading) setTimeout(() => loading.style.display = 'none', 1000);
           }).catch(() => {
             const loading = document.getElementById('mathjax-loading');
-            if (loading) {
-              loading.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 公式加载失败';
-              loading.className = loading.className.replace('bg-yellow-400', 'bg-red-400');
-            }
+            if (loading) setTimeout(() => loading.style.display = 'none', 2000);
           });
         }
       }
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
-  
-  <!-- 自定义样式 -->
-  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-gray-50">
   
-  <!-- 加载提示 - 核心修复：添加自动隐藏超时 -->
+  <!-- 加载提示 -->
   <div id="mathjax-loading" class="fixed top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-2 rounded shadow-md text-sm z-50">
     <i class="fas fa-spinner fa-spin"></i> 正在加载公式...
   </div>
 
-  <!-- 🎪 导航栏 -->
+  <!-- 导航栏 -->
   <nav class="bg-white shadow-lg sticky top-0 z-40">
     <div class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">微积分学习平台</h1>
+        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
         <div class="space-x-4">
           <a href="index.html" class="text-blue-600 font-semibold">首页</a>
           <a href="pages/history.html" class="hover:text-blue-600 transition">发展史</a>
@@ -78,49 +77,33 @@
     </div>
   </nav>
 
-  <!-- 🎯 主要内容 -->
+  <!-- 主要内容 -->
   <main class="container mx-auto px-6 py-8">
     
-    <!-- 数学家名言轮播模块 -->
+    <!-- 数学家名言轮播 -->
     <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-xl p-6 text-white mb-12">
       <div class="text-center">
-        <!-- 引用图标 -->
         <i class="fas fa-quote-left text-3xl mb-4 opacity-80"></i>
-        
-        <!-- 名言内容 -->
         <blockquote id="math-quote" class="text-xl md:text-2xl font-medium mb-4 leading-relaxed h-20 flex items-center justify-center">
           微积分是人类的伟大精神财富。
         </blockquote>
-        
-        <!-- 作者 -->
         <cite id="quote-author" class="text-sm md:text-base opacity-80 font-light">
           — 柯朗 (Richard Courant)
         </cite>
       </div>
       
-      <!-- 控制按钮 -->
       <div class="flex justify-center items-center mt-6 space-x-3">
-        <button onclick="prevQuote()" 
-                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition backdrop-blur-sm"
-                aria-label="上一条名言">
+        <button onclick="prevQuote()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition">
           <i class="fas fa-chevron-left"></i>
         </button>
-        
-        <button onclick="toggleAutoPlay()" 
-                id="autoplay-btn"
-                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-full transition backdrop-blur-sm"
-                aria-label="暂停/播放自动轮播">
+        <button onclick="toggleAutoPlay()" id="autoplay-btn" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-full transition">
           <i class="fas fa-pause" id="autoplay-icon"></i>
         </button>
-        
-        <button onclick="nextQuote()" 
-                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition backdrop-blur-sm"
-                aria-label="下一条名言">
+        <button onclick="nextQuote()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
       
-      <!-- 进度指示器 -->
       <div class="flex justify-center mt-4 space-x-1">
         <div id="quote-progress" class="flex space-x-1"></div>
       </div>
@@ -139,25 +122,19 @@
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition transform hover:-translate-y-1">
         <h3 class="text-2xl font-semibold mb-3 text-blue-600">📚 发展史</h3>
         <p class="text-gray-600 mb-4">了解从阿基米德到牛顿、莱布尼茨的完整故事</p>
-        <a href="pages/history.html" class="text-blue-600 font-semibold hover:underline">
-          开始学习 →
-        </a>
+        <a href="pages/history.html" class="text-blue-600 font-semibold hover:underline">开始学习 →</a>
       </div>
       
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition transform hover:-translate-y-1">
         <h3 class="text-2xl font-semibold mb-3 text-green-600">🔬 可视化实验室</h3>
         <p class="text-gray-600 mb-4">用 GeoGebra 动态观察导数、积分的几何意义</p>
-        <a href="pages/lab.html" class="text-green-600 font-semibold hover:underline">
-          进入实验室 →
-        </a>
+        <a href="pages/lab.html" class="text-green-600 font-semibold hover:underline">进入实验室 →</a>
       </div>
       
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl transition transform hover:-translate-y-1">
         <h3 class="text-2xl font-semibold mb-3 text-purple-600">🧮 公式手册</h3>
         <p class="text-gray-600 mb-4">常用导数、积分公式快速查询</p>
-        <a href="pages/formula-list.html" class="text-purple-600 font-semibold hover:underline">
-          查看公式 →
-        </a>
+        <a href="pages/formula-list.html" class="text-purple-600 font-semibold hover:underline">查看公式 →</a>
       </div>
     </div>
 
@@ -169,15 +146,13 @@
         <div class="my-4 p-4 bg-gray-50 rounded">
           $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
         </div>
-        <p class="text-sm text-gray-600">
-          拖动下方的滑块观察割线如何逼近切线
-        </p>
+        <p class="text-sm text-gray-600">拖动下方的滑块观察割线如何逼近切线</p>
       </div>
     </div>
   </main>
 
   <script>
-    // 名言轮播脚本
+    // 名言轮播数据
     const mathQuotes = [
       { text: "微积分是人类的伟大精神财富。", author: "柯朗 (Richard Courant)" },
       { text: "自然界中没有飞跃，一切都是连续的。", author: "莱布尼茨 (Gottfried Leibniz)" },
@@ -269,22 +244,10 @@
     // 页面加载完成
     document.addEventListener('DOMContentLoaded', function() {
       initQuotes();
-      
-      // 添加过渡动画样式
-      const style = document.createElement('style');
-      style.textContent = `
-        #math-quote, #quote-author {
-          transition: opacity 0.5s ease;
-        }
-      `;
-      document.head.appendChild(style);
-      
-      // 隐藏加载提示
       setTimeout(() => {
         const loading = document.getElementById('mathjax-loading');
         if (loading) loading.style.display = 'none';
       }, 3000);
-      
       console.log('✅ 首页加载完成');
     });
   </script>
