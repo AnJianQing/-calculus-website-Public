@@ -1,4 +1,112 @@
-/* 动态渐变背景动画 */
+/**
+ * 微积分平台全局样式表 v1.0
+ * 更新日期：2024-12-13
+ * 
+ * 包含内容：
+ * 1. CSS 自定义变量（主题色、字体、阴影）
+ * 2. 全局基础样式
+ * 3. 动画效果（渐变、打字机、3D卡片等）
+ * 4. 实用工具类
+ * 5. 响应式设计
+ * 6. 无障碍优化
+ * 7. 打印样式
+ */
+
+/* ==========================================================================
+   1. CSS 自定义变量 - 集中管理主题
+   ========================================================================== */
+:root {
+  /* 主题色 */
+  --color-primary: #2563eb;      /* 蓝色 */
+  --color-secondary: #7c3aed;    /* 紫色 */
+  --color-accent: #ee7752;       /* 渐变色起点 */
+  --color-success: #10b981;      /* 绿色 */
+  --color-warning: #f59e0b;      /* 黄色 */
+  --color-error: #ef4444;        /* 红色 */
+  
+  /* 背景色 */
+  --bg-light: #f8fafc;           /* 浅灰背景 */
+  --bg-dark: #0f172a;            /* 深蓝背景 */
+  --bg-card: #ffffff;            /* 卡片背景 */
+  
+  /* 文字色 */
+  --text-primary: #1e293b;       /* 主文字 */
+  --text-secondary: #64748b;     /* 次要文字 */
+  --text-light: #94a3b8;         /* 浅色文字 */
+  
+  /* 字体 */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace; /* 代码用 */
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* 动画时长 */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+}
+
+/* ==========================================================================
+   2. 全局基础样式
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* 平滑滚动 */
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-light);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 隐藏类 */
+.hidden {
+  display: none !important;
+}
+
+/* 容器 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 链接样式 */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+a:hover {
+  color: var(--color-secondary);
+}
+
+/* 代码块 */
+code {
+  font-family: var(--font-mono);
+  background: rgba(37, 99, 235, 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+/* ==========================================================================
+   3. 动画效果
+   ========================================================================== */
+
+/* 动态渐变背景动画 - 首页英雄区使用 */
 .hero-gradient {
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
@@ -11,37 +119,37 @@
   100% { background-position: 0% 50%; }
 }
 
-/* 卡片悬停 3D 效果 */
+/* 卡片悬停 3D 效果 - 首页功能卡片使用 */
 .card-3d {
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform var(--duration-normal), box-shadow var(--duration-normal);
 }
 
 .card-3d:hover {
   transform: perspective(1000px) rotateX(5deg) translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-xl);
 }
 
-/* 打字机动画 */
+/* 打字机动画 - 首页标题使用 */
 .typewriter {
   overflow: hidden;
-  border-right: .15em solid orange;
+  border-right: 0.15em solid var(--color-accent);
   white-space: nowrap;
   margin: 0 auto;
-  letter-spacing: .15em;
-  animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+  letter-spacing: 0.15em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
+  from, to { border-color: transparent; }
+  50% { border-color: var(--color-accent); }
 }
 
-/* 加载动画 */
+/* 加载动画 - 多页面使用 */
 .animate-spin {
   animation: spin 1s linear infinite;
 }
@@ -51,9 +159,302 @@
   to { transform: rotate(360deg); }
 }
 
-/* 响应式调整 */
+/* 淡入动画 - 通用入场效果 */
+.fade-in {
+  animation: fadeIn var(--duration-normal) ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 滑入动画 - 从下方滑入 */
+.slide-up {
+  animation: slideUp var(--duration-normal) ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 弹跳动画 - 提示图标使用 */
+.bounce-soft {
+  animation: bounceSoft 2s infinite;
+}
+
+@keyframes bounceSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ==========================================================================
+   4. 实用工具类
+   ========================================================================== */
+
+/* 文字截断 */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 清除浮动 */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* 响应式图片 */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 无障碍：仅屏幕阅读器可见 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 禁用文本选择 */
+.user-select-none {
+  user-select: none;
+}
+
+/* ==========================================================================
+   5. 响应式设计
+   ========================================================================== */
+
+/* 小屏幕优化 */
 @media (max-width: 768px) {
   .typewriter {
     font-size: 1.5rem;
   }
+  
+  .hero-gradient {
+    background-size: 200% 200%;
+    animation-duration: 10s;
+  }
+  
+  /* 移动端减少阴影 */
+  .card-3d:hover {
+    transform: perspective(1000px) rotateX(2deg) translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* 超小屏幕 */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .typewriter {
+    font-size: 1.25rem;
+  }
+}
+
+/* ==========================================================================
+   6. 无障碍优化
+   ========================================================================== */
+
+/* 减少动画（用户偏好设置） */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .scroll-behavior-auto {
+    scroll-behavior: auto;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  :root {
+    --color-primary: #003366;
+    --bg-card: #ffffff;
+  }
+}
+
+/* 焦点样式（键盘导航） */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   7. 打印样式
+   ========================================================================== */
+
+@media print {
+  /* 隐藏导航、按钮等无关元素 */
+  nav, button, .mathjax-loading, #mathjax-loading {
+    display: none !important;
+  }
+  
+  /* 简化背景 */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  /* 确保公式可见 */
+  .MathJax, .MathJax_Display {
+    color: black !important;
+  }
+  
+  /* 卡片样式简化 */
+  .timeline-card, .formula-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    page-break-inside: avoid; /* 避免卡片被分页截断 */
+  }
+  
+  /* 链接显示URL */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}
+
+/* ==========================================================================
+   8. 特殊组件样式
+   ========================================================================== */
+
+/* MathJax 公式容器优化 */
+.MathJax_Display {
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.02);
+  border-radius: 0.5rem;
+}
+
+/* 公式图片容器（CodeCogs） */
+.formula-image-wrapper {
+  display: inline-block;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 加载遮罩 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* 成功提示 */
+.toast-success {
+  background: var(--color-success);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--duration-normal) both;
+}
+
+/* 错误提示 */
+.toast-error {
+  background: var(--color-error);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--duration-normal) both;
+}
+
+/* 警告提示 */
+.toast-warning {
+  background: var(--color-warning);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--duration-normal) both;
+}
+
+/* ==========================================================================
+   9. 深色模式支持（可选）
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-light: #0f172a;
+    --bg-card: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  }
+  
+  body {
+    background: var(--bg-light);
+  }
+  
+  /* 深色模式下的公式背景 */
+  .MathJax_Display {
+    background: rgba(255,255,255,0.05);
+  }
+}
+
+/* ==========================================================================
+   10. 浏览器兼容补丁
+   ========================================================================== */
+
+/* Firefox：改善滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+/* Chrome/Edge/Safari：自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
 }

@@ -8,8 +8,10 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- MathJax -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- MathJax - 修复：先配置后加载 -->
   <script>
     window.MathJax = {
       tex: {
@@ -18,6 +20,7 @@
       }
     };
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
     /* 加载动画 */
@@ -31,13 +34,13 @@
   </style>
 </head>
 <body class="bg-gray-50">
+  
   <!-- 导航栏 -->
   <nav class="bg-white shadow-lg sticky top-0 z-50">
     <div class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
         <div class="space-x-4">
-          <!-- ✅ 修复：所有链接添加 ../ 返回根目录，同文件夹内直接写文件名 -->
           <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
           <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
           <a href="lab.html" class="text-blue-600 font-semibold">实验室</a>
@@ -56,14 +59,14 @@
       <!-- 左侧：控制面板 -->
       <div class="bg-white p-6 rounded-lg shadow">
         <h3 class="text-xl font-bold mb-4">选择实验</h3>
-        <select id="experiment-selector" class="w-full p-2 border rounded">
+        <select id="experiment-selector" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="">-- 请选择 --</option>
           <option value="derivative">导数定义动画</option>
           <option value="integral">定积分演示</option>
           <option value="taylor">泰勒级数</option>
         </select>
         
-        <div class="mt-6 p-4 bg-blue-50 rounded">
+        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
           <p class="text-sm text-gray-700">
             💡 <strong>提示：</strong> 选择实验后，右侧会加载交互式图形。
           </p>
@@ -111,13 +114,13 @@
     const experiments = {
       derivative: {
         name: "导数定义",
-        materialId: "eara9vcc",  // 你提供的 ID
+        materialId: "eara9vcc",
         width: 800,
         height: 600
       },
       integral: {
         name: "定积分",
-        materialId: "dtm5p9uz",  // 另一个示例
+        materialId: "dtm5p9uz",
         width: 800,
         height: 500
       },
@@ -151,7 +154,7 @@
                     width="${width}" 
                     height="${height}" 
                     style="border: 1px solid #e4e4e4; border-radius: 8px;" 
-                    frameborder="0">
+                    frameborder="0" allowfullscreen>
             </iframe>
             <p class="text-sm text-gray-500 mt-2">
               💡 拖动滑块进行交互
@@ -178,14 +181,24 @@
       `;
     }
 
-    // 事件监听（下拉菜单）
-    document.getElementById('experiment-selector').addEventListener('change', (e) => {
-      const key = e.target.value;
-      if (key && experiments[key]) {
-        const exp = experiments[key];
-        embedGeoGebra('applet-container', exp.materialId, exp.width, exp.height);
+    // 修复：DOM加载完成后绑定事件
+    document.addEventListener('DOMContentLoaded', () => {
+      const selector = document.getElementById('experiment-selector');
+      if (selector) {
+        selector.addEventListener('change', (e) => {
+          const key = e.target.value;
+          if (key && experiments[key]) {
+            const exp = experiments[key];
+            embedGeoGebra('applet-container', exp.materialId, exp.width, exp.height);
+          } else if (!key) {
+            // 清空容器
+            document.getElementById('applet-container').innerHTML = 
+              '<p class="text-gray-500 py-12">请选择左侧实验开始</p>';
+          }
+        });
       }
     });
   </script>
+
 </body>
 </html>
