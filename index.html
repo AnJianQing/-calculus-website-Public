@@ -11,7 +11,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- MathJax -->
+  <!-- MathJax - 核心修复：移除备用方案，仅用稳定 CDN -->
   <script>
     window.MathJax = {
       tex: {
@@ -21,18 +21,43 @@
         processEnvironments: true
       },
       options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        renderActions: {
+          findScript: [10, function (doc) {
+            document.getElementById('mathjax-loading')?.classList.add('hidden');
+          }, '']
+        }
+      },
+      startup: {
+        ready: function() {
+          MathJax.startup.defaultReady();
+          // 公式渲染完成后隐藏提示
+          MathJax.startup.promise.then(() => {
+            const loading = document.getElementById('mathjax-loading');
+            if (loading) {
+              loading.innerHTML = '<i class="fas fa-check-circle"></i> 公式加载完成';
+              loading.className = loading.className.replace('bg-yellow-400', 'bg-green-400');
+              setTimeout(() => loading.style.display = 'none', 1500);
+            }
+          }).catch(() => {
+            const loading = document.getElementById('mathjax-loading');
+            if (loading) {
+              loading.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 公式加载失败';
+              loading.className = loading.className.replace('bg-yellow-400', 'bg-red-400');
+            }
+          });
+        }
       }
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   
   <!-- 自定义样式 -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-gray-50">
   
-  <!-- 加载状态指示器 -->
+  <!-- 加载提示 - 核心修复：添加自动隐藏超时 -->
   <div id="mathjax-loading" class="fixed top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-2 rounded shadow-md text-sm z-50">
     <i class="fas fa-spinner fa-spin"></i> 正在加载公式...
   </div>
@@ -41,7 +66,7 @@
   <nav class="bg-white shadow-lg sticky top-0 z-40">
     <div class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
+        <h1 class="text-2xl font-bold text-blue-600">微积分学习平台</h1>
         <div class="space-x-4">
           <a href="index.html" class="text-blue-600 font-semibold">首页</a>
           <a href="pages/history.html" class="hover:text-blue-600 transition">发展史</a>
@@ -259,6 +284,8 @@
         const loading = document.getElementById('mathjax-loading');
         if (loading) loading.style.display = 'none';
       }, 3000);
+      
+      console.log('✅ 首页加载完成');
     });
   </script>
 
