@@ -5,25 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>可视化实验室 - 微积分平台</title>
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- MathJax - 修复：先配置后加载 -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
   <style>
-    /* 加载动画 */
     .animate-spin {
       animation: spin 1s linear infinite;
     }
@@ -31,171 +16,209 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+    
+    /* 全屏容器 */
+    .geogebra-container {
+      width: 100%;
+      height: 700px;
+      position: relative;
+    }
+    
+    .geogebra-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #e4e4e4;
+      border-radius: 8px;
+    }
+    
+    /* 全屏模式 */
+    .fullscreen-mode {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      background: white;
+    }
   </style>
 </head>
 <body class="bg-gray-50">
   
-<!-- 导航栏 - 已添加"应用"链接 -->
-<nav class="bg-white shadow-lg sticky top-0 z-50">
-  <div class="container mx-auto px-6 py-3">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
-      <div class="space-x-4">
-        <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
-        <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
-        <a href="lab.html" class="text-blue-600 font-semibold">实验室</a>
-        <a href="formula-list.html" class="hover:text-blue-600 transition">公式手册</a>
-        <a href="quiz.html" class="hover:text-blue-600 transition">测验挑战</a>
-        <a href="applications.html" class="hover:text-blue-600 transition">应用</a> <!-- ✅ 新增 -->
+  <!-- 导航栏 -->
+  <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
+        <div class="space-x-4">
+          <a href="../index.html" class="hover:text-blue-600 transition">首页</a>
+          <a href="history.html" class="hover:text-blue-600 transition">发展史</a>
+          <a href="lab.html" class="text-blue-600 font-semibold">实验室</a>
+          <a href="formula-list.html" class="hover:text-blue-600 transition">公式手册</a>
+          <a href="quiz.html" class="hover:text-blue-600 transition">测验挑战</a>
+          <a href="applications.html" class="hover:text-blue-600 transition">应用</a>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
-
+  </nav>
 
   <!-- 主要内容 -->
   <main class="container mx-auto px-6 py-8">
-    <h2 class="text-4xl font-bold text-center mb-8">动态可视化实验室</h2>
+    <h2 class="text-4xl font-bold text-center mb-8">可视化实验室</h2>
     
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- 左侧：控制面板 -->
-      <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-xl font-bold mb-4">选择实验</h3>
-        <select id="experiment-selector" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">-- 请选择 --</option>
-          <option value="derivative">导数定义动画</option>
-          <option value="integral">定积分演示</option>
-          <option value="taylor">泰勒级数</option>
-        </select>
-        
-        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
-          <p class="text-sm text-gray-700">
-            💡 <strong>提示：</strong> 选择实验后，右侧会加载交互式图形。
-          </p>
-        </div>
-
-        <!-- 快速链接 -->
-        <div class="mt-6">
-          <h4 class="font-semibold mb-2">快速演示</h4>
-          <button onclick="loadDirectEmbed()" 
-                  class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-            加载你的 GeoGebra
+    <!-- 实验选择器 -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+      <h3 class="text-xl font-bold mb-4">选择实验</h3>
+      <select id="experiment-selector" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="">-- 请选择实验 --</option>
+        <option value="derivative">导数定义动画</option>
+        <option value="integral">定积分演示</option>
+        <option value="taylor">泰勒级数展开</option>
+      </select>
+      
+      <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+        <p class="text-sm text-gray-700">
+          <i class="fas fa-lightbulb mr-2"></i>选择实验后，下方将加载完整交互界面
+        </p>
+      </div>
+    </div>
+    
+    <!-- GeoGebra 容器 -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <!-- 控制栏 -->
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="experiment-title" class="text-lg font-semibold text-gray-800">请选择实验</h3>
+        <div class="space-x-2">
+          <button onclick="toggleFullscreen()" id="fullscreen-btn" class="hidden bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+            <i class="fas fa-expand mr-1"></i>全屏
+          </button>
+          <button onclick="refreshApplet()" id="refresh-btn" class="hidden bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 transition">
+            <i class="fas fa-redo mr-1"></i>刷新
           </button>
         </div>
       </div>
       
-      <!-- 右侧：GeoGebra 容器 -->
-      <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
-        <div id="applet-container" class="text-center">
-          <p class="text-gray-500 py-12">请选择左侧实验开始</p>
-        </div>
+      <div id="applet-container" class="text-center">
+        <p class="text-gray-500 py-12">请选择上方实验开始</p>
       </div>
-    </div>
-
-    <!-- 单独测试区域（直接粘贴你的 iframe） -->
-    <div class="mt-12 bg-white p-6 rounded-lg shadow">
-      <h3 class="text-2xl font-semibold text-center mb-4">直接嵌入测试</h3>
-      <div class="flex justify-center">
-        <iframe src="https://www.geogebra.org/classic/eara9vcc?embed" 
-                width="800" 
-                height="600" 
-                allowfullscreen 
-                style="border: 1px solid #e4e4e4;border-radius: 4px;" 
-                frameborder="0">
-        </iframe>
+      
+      <!-- 操作说明 -->
+      <div id="instructions" class="hidden mt-6 p-4 bg-blue-50 rounded-lg">
+        <h4 class="font-semibold text-blue-800 mb-2">
+          <i class="fas fa-lightbulb mr-2"></i>操作提示
+        </h4>
+        <ul id="tips-list" class="text-sm text-gray-700 space-y-1">
+          <!-- 动态加载提示内容 -->
+        </ul>
       </div>
-      <p class="text-center text-sm text-gray-600 mt-2">
-        这是你提供的 GeoGebra 图形
-      </p>
     </div>
   </main>
 
   <!-- JavaScript -->
   <script>
-    // 实验配置（使用 Material ID）
+    // 实验配置 - 使用经典版嵌入
     const experiments = {
       derivative: {
-        name: "导数定义",
-        materialId: "eara9vcc",
-        width: 800,
-        height: 600
+        name: "导数定义动画",
+        embedUrl: "https://www.geogebra.org/classic/eara9vcc?embed", // 经典版嵌入
+        width: "100%",
+        height: 700,
+        tips: ["使用底部滑块动画", "点击工具栏按钮显示/隐藏元素", "全屏查看更完整界面"]
       },
       integral: {
-        name: "定积分",
-        materialId: "dtm5p9uz",
-        width: 800,
-        height: 500
+        name: "定积分演示",
+        embedUrl: "https://www.geogebra.org/classic/w2yjgnby?embed",
+        width: "100%",
+        height: 700,
+        tips: ["右键点击对象查看属性", "使用键盘方向键微调值", "点击代数区查看公式"]
       },
       taylor: {
-        name: "泰勒级数",
-        materialId: "v3yzd5v9",
-        width: 800,
-        height: 600
+        name: "泰勒级数展开",
+        embedUrl: "https://www.geogebra.org/classic/brpw7rnt?embed",
+        width: "100%",
+        height: 700,
+        tips: ["使用左侧工具栏", "拖动视图平移", "滚动鼠标缩放"]
       }
     };
 
-    // 动态加载函数（推荐）
-    function embedGeoGebra(containerId, materialId, width, height) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
+    let currentIframe = null;
 
-      // 显示加载动画
-      container.innerHTML = `
-        <div class="flex items-center justify-center py-12">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span class="ml-3 text-gray-600">正在加载 GeoGebra...</span>
-        </div>
-      `;
-
-      // 使用官方 iframe 嵌入
-      setTimeout(() => {
-        container.innerHTML = `
-          <div>
-            <h3 class="text-lg font-semibold mb-4">${experiments[materialId]?.name || 'GeoGebra 演示'}</h3>
-            <iframe src="https://www.geogebra.org/material/iframe/id/${materialId}/width/${width}/height/${height}" 
-                    width="${width}" 
-                    height="${height}" 
-                    style="border: 1px solid #e4e4e4; border-radius: 8px;" 
-                    frameborder="0" allowfullscreen>
-            </iframe>
-            <p class="text-sm text-gray-500 mt-2">
-              💡 拖动滑块进行交互
-            </p>
-          </div>
-        `;
-      }, 500);
-    }
-
-    // 加载你的直接嵌入
-    function loadDirectEmbed() {
+    // 加载实验 - 核心修复：使用经典版 embed
+    function loadExperiment(experiment) {
       const container = document.getElementById('applet-container');
-      container.innerHTML = `
-        <div>
-          <h3 class="text-lg font-semibold mb-4">你的 GeoGebra 图形</h3>
-          <iframe src="https://www.geogebra.org/classic/eara9vcc?embed" 
-                  width="800" 
-                  height="600" 
-                  allowfullscreen 
-                  style="border: 1px solid #e4e4e4;border-radius: 4px;" 
-                  frameborder="0">
-          </iframe>
-        </div>
-      `;
+      const titleEl = document.getElementById('experiment-title');
+      const fullscreenBtn = document.getElementById('fullscreen-btn');
+      const refreshBtn = document.getElementById('refresh-btn');
+      
+      if (!container || !experiment) return;
+
+      // 显示标题和控制按钮
+      titleEl.textContent = experiment.name;
+      fullscreenBtn.classList.remove('hidden');
+      refreshBtn.classList.remove('hidden');
+
+      // 创建 iframe
+      const iframe = document.createElement('iframe');
+      iframe.src = experiment.embedUrl;
+      iframe.width = experiment.width;
+      iframe.height = experiment.height;
+      iframe.style = "border: none; border-radius: 8px;";
+      iframe.allowFullscreen = true;
+      
+      // 监听加载完成
+      iframe.onload = () => {
+        console.log(`✅ ${experiment.name} 加载完成`);
+      };
+      
+      // 清空容器并插入
+      container.innerHTML = '';
+      container.appendChild(iframe);
+      currentIframe = iframe;
     }
 
-    // 修复：DOM加载完成后绑定事件
+    // 全屏切换
+    function toggleFullscreen() {
+      if (!currentIframe) return;
+      
+      if (currentIframe.requestFullscreen) {
+        currentIframe.requestFullscreen();
+      } else if (currentIframe.webkitRequestFullscreen) {
+        currentIframe.webkitRequestFullscreen();
+      } else if (currentIframe.msRequestFullscreen) {
+        currentIframe.msRequestFullscreen();
+      }
+    }
+
+    // 刷新实验
+    function refreshApplet() {
+      if (currentIframe) {
+        currentIframe.src = currentIframe.src;
+      }
+    }
+
+    // 事件监听
     document.addEventListener('DOMContentLoaded', () => {
       const selector = document.getElementById('experiment-selector');
+      const instructions = document.getElementById('instructions');
+      const tipsList = document.getElementById('tips-list');
+      
       if (selector) {
         selector.addEventListener('change', (e) => {
           const key = e.target.value;
           if (key && experiments[key]) {
-            const exp = experiments[key];
-            embedGeoGebra('applet-container', exp.materialId, exp.width, exp.height);
+            loadExperiment(experiments[key]);
+            
+            // 显示操作说明
+            instructions.classList.remove('hidden');
+            tipsList.innerHTML = experiments[key].tips.map(tip => `<li>• ${tip}</li>`).join('');
           } else if (!key) {
             // 清空容器
             document.getElementById('applet-container').innerHTML = 
-              '<p class="text-gray-500 py-12">请选择左侧实验开始</p>';
+              '<p class="text-gray-500 py-12">请选择上方实验开始</p>';
+            document.getElementById('experiment-title').textContent = '请选择实验';
+            document.getElementById('fullscreen-btn').classList.add('hidden');
+            document.getElementById('refresh-btn').classList.add('hidden');
+            instructions.classList.add('hidden');
           }
         });
       }

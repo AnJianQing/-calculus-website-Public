@@ -324,15 +324,98 @@
       <p class="text-lg mb-6 opacity-90">
         掌握微积分，就是掌握理解世界的钥匙
       </p>
-      <div class="flex justify-center space-x-4">
-        <a href="../index.html" class="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
-          <i class="fas fa-graduation-cap mr-2"></i>返回学习
-        </a>
-        <a href="lab.html" class="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition">
-          <i class="fas fa-flask mr-2"></i>进入实验室
-        </a>
+<!-- 全模块导航网格 -->
+<div class="scroll-fade container mx-auto px-4 py-16">
+  <div class="text-center mb-12">
+    <h2 class="text-4xl font-bold text-white mb-4">探索完整学习路径</h2>
+    <p class="text-xl text-white/90">从理论到实践，全方位掌握微积分</p>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    
+    <!-- 首页 -->
+    <a href="../index.html" 
+       class="group bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-105">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+          <i class="fas fa-home text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">首页</h3>
+      </div>
+      <p class="text-white/80 text-sm">每日挑战与平台导航</p>
+    </a>
+
+    <!-- 发展史 -->
+    <a href="history.html" 
+       class="group bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-105">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+          <i class="fas fa-landmark text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">发展史</h3>
+      </div>
+      <p class="text-white/80 text-sm">从阿基米德到牛顿的思想演进</p>
+    </a>
+
+    <!-- 实验室 -->
+    <a href="lab.html" 
+       class="group bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-105">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+          <i class="fas fa-flask text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">实验室</h3>
+      </div>
+      <p class="text-white/80 text-sm">GeoGebra动态可视化实验</p>
+    </a>
+
+    <!-- 公式手册 -->
+    <a href="formula-list.html" 
+       class="group bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-105">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+          <i class="fas fa-book-open text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">公式手册</h3>
+      </div>
+      <p class="text-white/80 text-sm">导数积分快速查询</p>
+    </a>
+
+    <!-- 测验挑战 -->
+    <a href="quiz.html" 
+       class="group bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-105">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4 group-hover:scale-110 transition">
+          <i class="fas fa-trophy text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">测验挑战</h3>
+      </div>
+      <p class="text-white/80 text-sm">公式知识与计算能力测试</p>
+    </a>
+
+    <!-- 应用（当前页面） -->
+    <div class="group bg-white/20 backdrop-blur-sm p-6 rounded-2xl border-2 border-white/40 cursor-default">
+      <div class="flex items-center mb-4">
+        <div class="bg-gradient-to-r from-cyan-500 to-cyan-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4">
+          <i class="fas fa-rocket text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">应用</h3>
+      </div>
+      <p class="text-white/90 text-sm">微积分改变世界（当前页面）</p>
+      <div class="mt-3 inline-flex items-center px-3 py-1 bg-white/20 rounded-full">
+        <i class="fas fa-check-circle mr-1 text-xs"></i>
+        <span class="text-xs text-white">已查看</span>
       </div>
     </div>
+
+  </div>
+
+  <!-- 底部行动号召 -->
+  <div class="text-center mt-10">
+    <p class="text-white/60 text-sm mb-4">继续探索，发现微积分的无限可能</p>
+  </div>
+</div>
+
   </section>
 
   <!-- 页脚 -->
