@@ -32,6 +32,10 @@
     .animate-spin { animation: spin 1s linear infinite; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     #math-quote, #quote-author { transition: opacity 0.5s ease; }
+    .typewriter {
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end 5; /* 仅闪烁5次后停止 */
+}
+
   </style>
   
   <!-- MathJax 配置（内联，确保加载） -->
