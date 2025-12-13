@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微积分应用 - 微积分平台</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+  <style>
+    /* 滚动入场动画 */
+    .scroll-fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .scroll-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 卡片3D悬停效果 */
+    .app-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+    
+    .app-card:hover {
+      transform: perspective(1000px) rotateX(5deg) translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    /* 图标浮动动画 */
+    .float-icon {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* 进度条动画 */
+    .progress-bar {
+      width: 0%;
+      transition: width 1.5s ease;
+    }
+    
+    .progress-bar.animate {
+      width: var(--progress);
+    }
+
+    /* 打字机效果（无光标） */
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .15em;
+      animation: typing 3.5s steps(40, end);
+    }
+    
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50">
+
+<!-- 导航栏 - "应用"链接高亮显示 -->
+<nav class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-3">
+    <div class="flex justify-between items-center">
+      <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        微积分探索
+      </h1>
+      <div class="space-x-4 text-sm">
+        <a href="../index.html" class="text-gray-700 hover:text-blue-600 transition">首页</a>
+        <a href="history.html" class="text-gray-700 hover:text-blue-600 transition">发展史</a>
+        <a href="lab.html" class="text-gray-700 hover:text-blue-600 transition">实验室</a>
+        <a href="formula-list.html" class="text-gray-700 hover:text-blue-600 transition">公式手册</a>
+        <a href="quiz.html" class="text-gray-700 hover:text-blue-600 transition">测验挑战</a>
+        <a href="applications.html" class="text-blue-600 font-semibold">应用</a> <!-- ✅ 当前页面高亮 -->
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- 英雄区 -->
+  <section class="relative overflow-hidden py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+    <div class="absolute inset-0 bg-black/10"></div>
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 typewriter">
+        微积分的无限可能
+      </h1>
+      <p class="text-white/90 text-lg md:text-xl max-w-3xl mx-auto">
+        从量子物理到人工智能，从金融建模到生命科学，微积分是现代文明的基石
+      </p>
+      <div class="mt-8 flex justify-center">
+        <a href="#applications" class="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition shadow-lg">
+          <i class="fas fa-rocket mr-2"></i>探索应用
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 统计卡片 -->
+  <section class="container mx-auto px-4 -mt-8 mb-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="scroll-fade bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">6</div>
+        <div class="text-xs text-gray-600">应用领域</div>
+      </div>
+      <div class="scroll-fade bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">∞</div>
+        <div class="text-xs text-gray-600">实际案例</div>
+      </div>
+      <div class="scroll-fade bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent">100%</div>
+        <div class="text-xs text-gray-600">科技覆盖率</div>
+      </div>
+      <div class="scroll-fade bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-md text-center hover:shadow-lg transition">
+        <div class="text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">未来</div>
+        <div class="text-xs text-gray-600">持续拓展</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 应用领域 -->
+  <section id="applications" class="container mx-auto px-4 py-12">
+    <h2 class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      微积分改变世界
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- 物理学 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-blue-500 to-blue-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-atom text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">物理学</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          从牛顿力学到量子场论，微积分是描述自然规律的语言
+        </p>
+        <div class="space-y-3">
+          <div class="bg-blue-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-blue-800">运动学</p>
+            <p class="text-sm">$v(t) = \frac{ds}{dt}, \quad a(t) = \frac{dv}{dt}$</p>
+          </div>
+          <div class="bg-blue-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-blue-800">麦克斯韦方程组</p>
+            <p class="text-sm">$\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}$</p>
+          </div>
+          <div class="bg-blue-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-blue-800">量子力学</p>
+            <p class="text-sm">$i\hbar\frac{\partial}{\partial t}\psi = \hat{H}\psi$</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 计算机科学 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-purple-500 to-purple-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-laptop-code text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">计算机科学</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          机器学习、图形学、算法优化的数学基石
+        </p>
+        <div class="space-y-3">
+          <div class="bg-purple-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-purple-800">神经网络</p>
+            <p class="text-sm">$\frac{\partial L}{\partial w_{ij}} = \delta_j a_i$</p>
+          </div>
+          <div class="bg-purple-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-purple-800">计算机图形学</p>
+            <p class="text-sm">贝塞尔曲线、光线追踪</p>
+          </div>
+          <div class="bg-purple-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-purple-800">算法复杂度</p>
+            <p class="text-sm">$O(n \log n)$ 优化分析</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 金融与经济 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-green-500 to-green-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">金融与经济</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          从期权定价到风险管理，微积分驱动现代金融
+        </p>
+        <div class="space-y-3">
+          <div class="bg-green-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-green-800">期权定价</p>
+            <p class="text-sm">Black-Scholes方程</p>
+          </div>
+          <div class="bg-green-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-green-800">边际分析</p>
+            <p class="text-sm">$MC = \frac{dTC}{dQ}, \quad MR = \frac{dTR}{dQ}$</p>
+          </div>
+          <div class="bg-green-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-green-800">复利增长</p>
+            <p class="text-sm">$A = P(1 + \frac{r}{n})^{nt}$</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 生物医学 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-red-500 to-red-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-dna text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">生物医学</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          药物动力学、神经信号、流行病模型
+        </p>
+        <div class="space-y-3">
+          <div class="bg-red-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-red-800">药物代谢</p>
+            <p class="text-sm">$C(t) = C_0 e^{-kt}$</p>
+          </div>
+          <div class="bg-red-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-red-800">神经元模型</p>
+            <p class="text-sm">Hodgkin-Huxley方程</p>
+          </div>
+          <div class="bg-red-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-red-800">肿瘤生长</p>
+            <p class="text-sm">$V(t) = V_0 e^{\lambda t}$</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 工程学 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-indigo-500 to-indigo-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-cogs text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">工程学</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          结构优化、流体力学、控制系统设计
+        </p>
+        <div class="space-y-3">
+          <div class="bg-indigo-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-indigo-800">桥梁设计</p>
+            <p class="text-sm">应力-应变分析</p>
+          </div>
+          <div class="bg-indigo-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-indigo-800">流体力学</p>
+            <p class="text-sm">纳维-斯托克斯方程</p>
+          </div>
+          <div class="bg-indigo-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-indigo-800">控制理论</p>
+            <p class="text-sm">PID控制器调优</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 日常生活 -->
+      <div class="scroll-fade app-card bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div class="float-icon bg-gradient-to-r from-pink-500 to-pink-600 w-12 h-12 rounded-full flex items-center justify-center text-white mr-3">
+            <i class="fas fa-mobile-alt text-xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">日常生活</h3>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+          导航定位、图像处理、推荐算法
+        </p>
+        <div class="space-y-3">
+          <div class="bg-pink-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-pink-800">GPS导航</p>
+            <p class="text-sm">路径优化算法</p>
+          </div>
+          <div class="bg-pink-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-pink-800">图像压缩</p>
+            <p class="text-sm">JPEG傅里叶变换</p>
+          </div>
+          <div class="bg-pink-50 p-3 rounded-lg">
+            <p class="text-xs font-semibold text-pink-800">推荐系统</p>
+            <p class="text-sm">梯度下降优化</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 总结 CTA -->
+    <div class="scroll-fade bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white mt-12">
+      <h2 class="text-3xl font-bold mb-4">微积分改变未来</h2>
+      <p class="text-lg mb-6 opacity-90">
+        掌握微积分，就是掌握理解世界的钥匙
+      </p>
+      <div class="flex justify-center space-x-4">
+        <a href="../index.html" class="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+          <i class="fas fa-graduation-cap mr-2"></i>返回学习
+        </a>
+        <a href="lab.html" class="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition">
+          <i class="fas fa-flask mr-2"></i>进入实验室
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-white/50 backdrop-blur-sm py-8 mt-16 border-t border-gray-200">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-gray-600 text-sm">
+        微积分不止于理论，更在于改变世界 <i class="fas fa-heart text-red-500 ml-1"></i>
+      </p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 滚动动画观察器
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          
+          // 进度条动画
+          const progressBars = entry.target.querySelectorAll('.progress-bar');
+          progressBars.forEach(bar => {
+            setTimeout(() => bar.classList.add('animate'), 300);
+          });
+        }
+      });
+    }, observerOptions);
+
+    // 观察所有需要动画的元素
+    document.addEventListener('DOMContentLoaded', () => {
+      const elements = document.querySelectorAll('.scroll-fade');
+      elements.forEach(el => observer.observe(el));
+      
+      console.log('✅ 应用页面加载完成');
+    });
+
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
