@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>微积分学习平台</title>
   
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Font Awesome -->
@@ -27,7 +27,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
-  <!-- 核心修复：改为相对路径 -->
+  <!-- 自定义样式 -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-gray-50">
@@ -37,13 +37,12 @@
     <i class="fas fa-spinner fa-spin"></i> 正在加载公式...
   </div>
 
-  <!-- 导航栏 -->
+  <!-- 🎪 导航栏 -->
   <nav class="bg-white shadow-lg sticky top-0 z-40">
     <div class="container mx-auto px-6 py-3">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold text-blue-600">微积分探索</h1>
         <div class="space-x-4">
-          <!-- 路径修复：首页链接改为相对路径 -->
           <a href="index.html" class="text-blue-600 font-semibold">首页</a>
           <a href="pages/history.html" class="hover:text-blue-600 transition">发展史</a>
           <a href="pages/lab.html" class="hover:text-blue-600 transition">实验室</a>
@@ -54,22 +53,51 @@
     </div>
   </nav>
 
-  <!-- 主要内容 -->
+  <!-- 🎯 主要内容 -->
   <main class="container mx-auto px-6 py-8">
     
-    <!-- 每日挑战卡片 -->
-    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 text-white mb-12">
-      <h3 class="text-2xl font-bold mb-2">🎯 今日挑战</h3>
-      <p class="text-lg mb-4">计算极限：</p>
-      <div class="bg-white bg-opacity-20 p-4 rounded mb-4">
-        $$\lim_{x \to 0} \frac{\sin(3x)}{x}$$
+    <!-- 数学家名言轮播模块 -->
+    <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-xl p-6 text-white mb-12">
+      <div class="text-center">
+        <!-- 引用图标 -->
+        <i class="fas fa-quote-left text-3xl mb-4 opacity-80"></i>
+        
+        <!-- 名言内容 -->
+        <blockquote id="math-quote" class="text-xl md:text-2xl font-medium mb-4 leading-relaxed h-20 flex items-center justify-center">
+          微积分是人类的伟大精神财富。
+        </blockquote>
+        
+        <!-- 作者 -->
+        <cite id="quote-author" class="text-sm md:text-base opacity-80 font-light">
+          — 柯朗 (Richard Courant)
+        </cite>
       </div>
-      <button onclick="revealAnswer()" 
-              class="bg-white text-purple-600 px-4 py-2 rounded hover:bg-gray-100 transition font-semibold">
-        查看答案
-      </button>
-      <div id="answer" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded">
-        <strong>解答：</strong> 使用等价无穷小 \(\sin(3x) \sim 3x\)，原式 = 3
+      
+      <!-- 控制按钮 -->
+      <div class="flex justify-center items-center mt-6 space-x-3">
+        <button onclick="prevQuote()" 
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition backdrop-blur-sm"
+                aria-label="上一条名言">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <button onclick="toggleAutoPlay()" 
+                id="autoplay-btn"
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-full transition backdrop-blur-sm"
+                aria-label="暂停/播放自动轮播">
+          <i class="fas fa-pause" id="autoplay-icon"></i>
+        </button>
+        
+        <button onclick="nextQuote()" 
+                class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-full transition backdrop-blur-sm"
+                aria-label="下一条名言">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- 进度指示器 -->
+      <div class="flex justify-center mt-4 space-x-1">
+        <div id="quote-progress" class="flex space-x-1"></div>
       </div>
     </div>
 
@@ -124,15 +152,109 @@
   </main>
 
   <script>
-    // 查看答案函数
-    function revealAnswer() {
-      document.getElementById('answer').classList.toggle('hidden');
+    // 名言轮播脚本
+    const mathQuotes = [
+      { text: "微积分是人类的伟大精神财富。", author: "柯朗 (Richard Courant)" },
+      { text: "自然界中没有飞跃，一切都是连续的。", author: "莱布尼茨 (Gottfried Leibniz)" },
+      { text: "如果说我看得比别人更远，那是因为我站在巨人的肩膀上。", author: "牛顿 (Isaac Newton)" },
+      { text: "数学是上帝用来书写宇宙的文字。", author: "伽利略 (Galileo Galilei)" },
+      { text: "数学的本质在于它的自由。", author: "康托尔 (Georg Cantor)" },
+      { text: "在数学中，我们发现的最有价值的东西是有序。", author: "柯西 (Augustin-Louis Cauchy)" },
+      { text: "数学是科学的皇后。", author: "高斯 (Carl Friedrich Gauss)" },
+      { text: "学习微积分就像在微风中欣赏音乐。", author: "佚名" }
+    ];
+
+    let currentQuoteIndex = 0;
+    let autoPlayInterval = null;
+    let isAutoPlaying = true;
+
+    // 初始化
+    function initQuotes() {
+      renderQuote();
+      renderProgress();
+      startAutoPlay();
     }
 
-    // 页面加载完成后的通用初始化
+    // 渲染名言
+    function renderQuote() {
+      const quoteEl = document.getElementById('math-quote');
+      const authorEl = document.getElementById('quote-author');
+      quoteEl.style.opacity = 0;
+      authorEl.style.opacity = 0;
+      setTimeout(() => {
+        quoteEl.textContent = mathQuotes[currentQuoteIndex].text;
+        authorEl.textContent = `— ${mathQuotes[currentQuoteIndex].author}`;
+        quoteEl.style.opacity = 1;
+        authorEl.style.opacity = 1;
+      }, 250);
+      updateProgress();
+    }
+
+    // 渲染进度点
+    function renderProgress() {
+      const progressEl = document.getElementById('quote-progress');
+      progressEl.innerHTML = mathQuotes.map((_, i) => 
+        `<div class="w-2 h-2 rounded-full transition ${i === currentQuoteIndex ? 'bg-white' : 'bg-white opacity-30'}" id="dot-${i}"></div>`
+      ).join('');
+    }
+
+    // 更新进度点
+    function updateProgress() {
+      mathQuotes.forEach((_, i) => {
+        const dot = document.getElementById(`dot-${i}`);
+        dot.className = `w-2 h-2 rounded-full transition ${i === currentQuoteIndex ? 'bg-white' : 'bg-white opacity-30'}`;
+      });
+    }
+
+    // 下一条
+    function nextQuote() {
+      currentQuoteIndex = (currentQuoteIndex + 1) % mathQuotes.length;
+      renderQuote();
+    }
+
+    // 上一条
+    function prevQuote() {
+      currentQuoteIndex = (currentQuoteIndex - 1 + mathQuotes.length) % mathQuotes.length;
+      renderQuote();
+    }
+
+    // 开始自动播放
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(nextQuote, 5000);
+    }
+
+    // 停止自动播放
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    // 切换自动播放
+    function toggleAutoPlay() {
+      const icon = document.getElementById('autoplay-icon');
+      if (isAutoPlaying) {
+        stopAutoPlay();
+        icon.className = 'fas fa-play';
+      } else {
+        startAutoPlay();
+        icon.className = 'fas fa-pause';
+      }
+      isAutoPlaying = !isAutoPlaying;
+    }
+
+    // 页面加载完成
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('✅ 首页加载完成');
-      // 3秒后隐藏加载提示
+      initQuotes();
+      
+      // 添加过渡动画样式
+      const style = document.createElement('style');
+      style.textContent = `
+        #math-quote, #quote-author {
+          transition: opacity 0.5s ease;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // 隐藏加载提示
       setTimeout(() => {
         const loading = document.getElementById('mathjax-loading');
         if (loading) loading.style.display = 'none';
